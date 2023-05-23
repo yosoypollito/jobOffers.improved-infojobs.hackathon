@@ -6,6 +6,7 @@ import Skills from "./Skills";
 import List from "./List";
 import ListItem from "./ListItem";
 import Badge from "./Badge";
+import GetDetailedInformation from "./GetDetailedInformation";
 export default function JobCard({ title, profile, province, teleworking, link, skillsList, contractType, updateDate, salaryDescription, journey, experienceMin, ...offer }: JobOffer) {
   console.log({ offer })
 
@@ -81,7 +82,7 @@ export default function JobCard({ title, profile, province, teleworking, link, s
       <div className="grid grid-cols-3 place-content-center">
         <div>
         </div>
-        <button className="text-sm">Detalles</button>
+        <GetDetailedInformation id={offer.id} />
         <div className="col-[3] text-right">
           <Link href={link} target="_blank" className="text-primary text-xs">Ver en InfoJobs</Link>
         </div>
