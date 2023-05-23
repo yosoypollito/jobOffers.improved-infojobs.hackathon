@@ -5,7 +5,7 @@ import Link from "next/link";
 import Skills from "./Skills";
 import List from "./List";
 import ListItem from "./ListItem";
-import { Slabo_13px } from "next/font/google";
+import Badge from "./Badge";
 export default function JobCard({ title, profile, province, teleworking, link, skillsList, contractType, updateDate, salaryDescription, journey, experienceMin, ...offer }: JobOffer) {
   console.log({ offer })
 
@@ -64,9 +64,13 @@ export default function JobCard({ title, profile, province, teleworking, link, s
           <div className="flex flex-col gap-2">
 
             <h2 className="text-sm">{title}</h2>
-            <h3 className="text-xs font-medium text-primary">
-              <Link href={profile.url || "#"}>{profile.name}</Link> <span className="text-success">Hace {texts && texts.main} {([times.years, times.months, times.weeks, times.days].join("") === '0000') && 'nuevo'}</span>
-            </h3>
+            <div className="flex flex-row gap-2 items-center">
+              <h3 className="text-xs font-medium text-primary inline">
+                <Link href={profile.url || "#"}>{profile.name}</Link>
+              </h3>
+              <span className="text-success text-xs">Hace {texts && texts.main}</span>
+              {([times.years, times.months, times.weeks, times.days].join("") === '0000') && <Badge color="green">Nuevo</Badge>}
+            </div>
             <Skills skillsList={skillsList} />
           </div>
         </div>
