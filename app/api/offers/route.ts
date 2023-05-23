@@ -38,33 +38,3 @@ export default async function getOfferInformation({ description }: { description
   }
 
 }
-
-
-const infojobsUrl = process.env.INFOJOBS_API_URL ?? '';
-const infojobsToken = process.env.INFOJOBS_TOKEN ?? ''
-
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const query = searchParams.get('q') ?? '';
-
-  try {
-
-    const res = await fetch(`${infojobsUrl}offer?q=${query}`, {
-      headers: {
-        Authorization: `Basic ${infojobsToken}`
-      }
-    });
-    const offers = await res.json();
-    
-    if(offers?.error){
-      throw new Error(offers.error_description);
-    };
-    console.log(offers)
-
-
-    return NextResponse.json({ offers })
-  } catch (e) {
-    console.log({ e })
-    return new Response("Error during offers");
-  }
-}
