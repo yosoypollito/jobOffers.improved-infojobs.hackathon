@@ -9,10 +9,8 @@ import { Slabo_13px } from "next/font/google";
 export default function JobCard({ title, profile, province, teleworking, link, skillsList, contractType, updateDate, salaryDescription, journey, experienceMin, ...offer }: JobOffer) {
   console.log({ offer })
 
-  console.log(experienceMin)
-
-
-  const { texts } = formatDate(new Date(updateDate))
+  const { texts, times } = formatDate(new Date(updateDate))
+  console.log({ times });
 
   return (
     <div className="flex flex-col gap-2 bg-ij-container-bg hover:bg-ig-card-bg-hover p-4 w-full rounded-md">
@@ -67,7 +65,7 @@ export default function JobCard({ title, profile, province, teleworking, link, s
 
             <h2 className="text-sm">{title}</h2>
             <h3 className="text-xs font-medium text-primary">
-              <Link href={profile.url || "#"}>{profile.name}</Link> <span className="text-success">Hace {texts && texts.main}</span>
+              <Link href={profile.url || "#"}>{profile.name}</Link> <span className="text-success">Hace {texts && texts.main} {([times.years, times.months, times.weeks, times.days].join("") === '0000') && 'nuevo'}</span>
             </h3>
             <Skills skillsList={skillsList} />
           </div>
@@ -78,7 +76,6 @@ export default function JobCard({ title, profile, province, teleworking, link, s
 
       <div className="grid grid-cols-3 place-content-center">
         <div>
-
         </div>
         <button className="text-sm">Detalles</button>
         <div className="col-[3] text-right">
