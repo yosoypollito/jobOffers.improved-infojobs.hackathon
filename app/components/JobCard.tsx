@@ -62,9 +62,7 @@ export default function JobCard({ title, profile, province, teleworking, link, s
 
 
         <div className="flex flex-row gap-2">
-          <div className=" w-[70px] h-[70px]">
-            <Image className=" object-fit w-[70px] h-[70px] border-2 border-ij-container-border rounded-md" src={profile.logoUrl || "/noAvatar.svg"} width="70" height="70" alt={`${profile.name}`} />
-          </div>
+          <Image className="object-cover w-[70px] h-[70px] border-2 border-ij-container-border rounded-md max-w-full max-h-full" src={profile.logoUrl || "/noAvatar.png"} width="70" height="70" alt={`${profile.name}`} />
           <div className="flex flex-col gap-2">
 
             <h2 className="text-sm">{title}</h2>
