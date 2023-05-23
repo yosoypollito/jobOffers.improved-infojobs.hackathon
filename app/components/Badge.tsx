@@ -6,6 +6,6 @@ export default function Badge({ children, color = "blue" }: { children: React.Re
     "orange": "bg-accent-l4 text-accent"
   }
   return (
-    <span className={`flex flex-row items-center gap-1 p-1 ${colors[color]} rounded-sm text-xs`}>{children}</span>
+    <span className={`flex flex-row items-center gap-1 p-1 ${colors[color]} rounded-sm text-xs w-fit`}>{children}</span>
   )
 }
