@@ -1,17 +1,9 @@
+import getOfferById from "@/app/services/getOfferById";
 import { NextResponse } from "next/server";
-import { ChatCompletionRequestMessageRoleEnum, Configuration, OpenAIApi } from "openai"
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY ?? '';
-const infojobsToken = process.env.INFOJOBS_TOKEN ?? '';
-
-const config = new Configuration({
-  apiKey: OPENAI_API_KEY
-})
-
-const openai = new OpenAIApi(config)
 const INITIAL_MESSAGES = [
   {
-    role: ChatCompletionRequestMessageRoleEnum.System,
+    role: "system",
     content: `Voy a enviarte descripciones de ofertas laborales, quiero que me extraigas datos de ella utilizando este formato json:
     {
     yearsOfExperience: [yearsOfExperience],
@@ -40,54 +32,62 @@ const INITIAL_MESSAGES = [
   }
 ]
 
+const pkKey = process.env.PK_KEY ?? '';
+const pkURL = process.env.PK_URL ?? '';
+
 export async function getOfferInformation({ description, minRequirements }: { description: string; minRequirements: string; }) {
-  const completion = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
-    messages: [
-      ...INITIAL_MESSAGES,
-      {
-        role: ChatCompletionRequestMessageRoleEnum.User,
-        content: `${minRequirements} ${description}`
-      }
-    ]
+  const res = await fetch(pkURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${pkKey}`
+    },
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: [
+        ...INITIAL_MESSAGES,
+        {
+          role: "user",
+          content: `${minRequirements} ${description}`
+        }
+      ]
+    })
   })
 
-  const data = completion.data.choices[0].message?.content ?? '';
+  const data = await res.json();
+  console.log({ data });
+
+  const offerInformation = data.choices[0].message?.content ?? '';
+  console.log({ offerInformation })
+
 
   try {
-    const json = JSON.parse(data)
-    return NextResponse.json(json);
+    const json = JSON.parse(offerInformation)
+    console.log({ objeto: json })
+    return json;
   } catch (e: any) {
-    return new Response("Cant convert to json", { status: 500 })
+    throw new Error("Cant convert to json")
   }
 
 }
 
-async function getOfferById(id: string) {
-  const res = await fetch(`https://api.infojobs.net/api/7/offer/${id}`, {
-    headers: {
-      Authorization: `Basic ${infojobsToken}`
-    }
-  });
-
-  const offer = await res.json();
-
-  return offer
-}
-
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  console.log(searchParams)
   const id = searchParams.get('id');
 
   if (id == null) return new Response("No id provided", { status: 400 })
 
-  const offer = await getOfferById(id);
+  try {
 
-  const detailedInformation = await getOfferInformation({ description: offer.description, minRequirements: offer.minRequirements });
-  console.log({ detailedInformation });
+    const offer = await getOfferById(id);
 
-  //  console.log({ offer })
+    const offerInformation = await getOfferInformation({ description: offer.description, minRequirements: offer.minRequirements });
+    console.log({ offerInformation });
+    //TODO Add some functionality to save this information to database to make fast access after first time.
+    // also handle if description is updated.
 
-  return NextResponse.json({ offer });
+    return NextResponse.json({ offerInformation });
+  } catch (e: any) {
+    return new Response(`Error: ${e.message}`, { status: 400 });
+  }
 }

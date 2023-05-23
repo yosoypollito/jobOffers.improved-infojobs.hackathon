@@ -1,3 +1,5 @@
+import getOfferById from "./getOfferById";
+
 export interface JobOffer {
   title: string;
   id: string;
@@ -109,16 +111,6 @@ export interface Upsellings {
 const infojobsUrl = process.env.INFOJOBS_API_URL ?? '';
 const infojobsToken = process.env.INFOJOBS_TOKEN ?? ''
 
-const getOffer = async (id: string) => {
-  const res = await fetch(`${infojobsUrl}offer/${id}`, {
-    headers: {
-      Authorization: `Basic ${infojobsToken}`
-    }
-  });
-  const offer = await res.json();
-  return offer;
-}
-
 export default async function getOffers(query: string) {
   const res = await fetch(`${infojobsUrl}offer?category=informatica-telecomunicaciones&q=${query}`, {
     headers: {
@@ -128,8 +120,8 @@ export default async function getOffers(query: string) {
 
   const offers = await res.json();
 
-  const jobOffers: Array<JobOffer> = await Promise.all(offers.items.map((offer: JobOffer) => getOffer(offer.id)))
-  console.log({first:jobOffers[0]})
+  const jobOffers: Array<JobOffer> = await Promise.all(offers.items.map((offer: JobOffer) => getOfferById(offer.id)))
+  console.log({ first: jobOffers[0] })
 
   return {
     pagination: {
