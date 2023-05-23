@@ -47,11 +47,11 @@ export default function JobCard({ title, profile, province, teleworking, link, s
             <ListItem>
               {salaryDescription}
             </ListItem>
+            <ListItem>
+              {experienceMin.value}
+            </ListItem>
           </List>
           <List>
-            <ListItem>
-              <Link href={link} target="_blank" className="text-primary">Ver en InfoJobs</Link>
-            </ListItem>
             <ListItem>
               <span className="cursor-pointer">
                 <svg className="fill-gray" width="15" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M5.568 12.977a3.5 3.5 0 0 1 4.556 0l2.726 2.337a.3.3 0 0 0 .496-.228V2.25a.5.5 0 0 0-.5-.5h-10a.5.5 0 0 0-.5.5v12.836a.3.3 0 0 0 .495.228l2.727-2.337ZM2.846.25h10a2 2 0 0 1 2 2v14.576a1 1 0 0 1-1.651.759l-4.048-3.47a2 2 0 0 0-2.603 0l-4.048 3.47a1 1 0 0 1-1.65-.76V2.25a2 2 0 0 1 2-2Z" /></svg>
@@ -62,7 +62,7 @@ export default function JobCard({ title, profile, province, teleworking, link, s
 
 
         <div className="flex flex-row gap-2">
-          <Image className="object-cover w-[70px] h-[70px] border-2 border-ij-container-border rounded-md max-w-full max-h-full" src={profile.logoUrl || "/noAvatar.png"} width="70" height="70" alt={`${profile.name}`} />
+          <Image className="object-cover w-[70px] h-[70px] border-2 border-ij-container-border rounded-md max-w-full max-h-full" src={profile.logoUrl || "/noAvatar.png"} width="70" height="70" alt={profile.name} />
           <div className="flex flex-col gap-2">
 
             <h2 className="text-sm">{title}</h2>
@@ -76,8 +76,14 @@ export default function JobCard({ title, profile, province, teleworking, link, s
 
 
 
-      <div className="flex w-full justify-center">
+      <div className="grid grid-cols-3 place-content-center">
+        <div>
+
+        </div>
         <button className="text-sm">Detalles</button>
+        <div className="col-[3] text-right">
+          <Link href={link} target="_blank" className="text-primary text-xs">Ver en InfoJobs</Link>
+        </div>
       </div>
 
     </div>
