@@ -2,10 +2,13 @@ export default async function getOfferDetailedInformation(id: string) {
   console.log('Fetched')
   try {
     const res = await fetch('/api/offers/information?id=' + id)
-    const detailedInformation = await res.json();
+    const { offerInformation } = await res.json();
 
-    return detailedInformation
+    console.log({ offerInformation })
+
+    return offerInformation
   } catch (err) {
+    return null;
     console.log({ err });
   }
 }

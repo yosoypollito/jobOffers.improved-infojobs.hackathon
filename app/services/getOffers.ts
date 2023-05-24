@@ -127,8 +127,6 @@ export interface ClientJobOffer {
   detailedInformation: DetailedInformation | null
 }
 
-export type MapClientJobOffer = Map<string, ClientJobOffer>
-
 const infojobsUrl = process.env.INFOJOBS_API_URL ?? '';
 const infojobsToken = process.env.INFOJOBS_TOKEN ?? ''
 
@@ -143,15 +141,11 @@ export default async function getOffers(query: string) {
 
   const jobOffers: Array<JobOffer> = await Promise.all(offers.items.map((offer: JobOffer) => getOfferById(offer.id)))
 
-  const clientJobOffers: MapClientJobOffer = new Map();
-
-  jobOffers.forEach(offer => {
-    clientJobOffers.set(offer.id, {
-      data: offer,
-      detailedInformation: null,
-      loading: false
-    })
-  });
+  const clientJobOffers: ClientJobOffer[] = jobOffers.map(offer => ({
+    data: offer,
+    detailedInformation: null,
+    loading: false
+  }));
 
   return {
     pagination: {

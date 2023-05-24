@@ -1,42 +1,32 @@
-import { create } from "zustand";
-import { type MapClientJobOffer } from "../services/getOffers";
-import getOffers from "../services/getOffers";
+"use client"
+import { ClientJobOffer, DetailedInformation } from "../services/getOffers";
 import { useEffect, useMemo, useRef } from "react";
 
+import { useOffersStore } from "../store";
+import { list } from "postcss";
 
-interface OffersState {
-  initialized: boolean;
-  listOfOffers: MapClientJobOffer;
-  fetchOffers: () => Promise<void>;
-  setListOfOffers: (data: MapClientJobOffer) => void;
-}
+export default function useOffers({ offers }: { offers?: ClientJobOffer[] }) {
 
-const store = create<OffersState>((set) => ({
-  initialized: false,
-  listOfOffers: new Map(),
-  fetchOffers: async () => {
-    const data = await getOffers('React');
-    set({ listOfOffers: data.offers });
-  },
-  setListOfOffers: (data) => set({ listOfOffers: data }),
-}))
-
-export default function useOffers({ offers }: { offers?: MapClientJobOffer }) {
-
-  const { initialized, listOfOffers, fetchOffers, setListOfOffers } = store();
+  const { initialized, listOfOffers, fetchOffers, updateOffer, getOfferById, setListOfOffers } = useOffersStore();
 
   useEffect(() => {
     if (offers) setListOfOffers(offers);
 
-    store.setState({ initialized: true });
+    useOffersStore.setState({ initialized: true });
   }, [])
 
-  const toRenderOffers = useMemo(() => {
-    const map = initialized ? listOfOffers : offers || new Map();
-    return Object.entries(map).map(([key, value]) => value[1])
-  }, [initialized, listOfOffers]);
+  const setDetailedInformation = (id: string, detailedInformation: DetailedInformation) => {
+    const offer = getOfferById(id);
+    //TODO do something if offers is not found
+    if (!offer) return;
+
+    offer.data.detailedInformation = detailedInformation;
+
+    updateOffer(offer.index, offer.data);
+  }
 
   return {
-    listOfOffers: toRenderOffers
+    listOfOffers: initialized ? listOfOffers : offers || [],
+    setDetailedInformation
   };
 }

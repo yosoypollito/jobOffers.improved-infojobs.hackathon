@@ -1,17 +1,35 @@
 import { create } from "zustand";
-import getOffers, { MapClientJobOffer } from "./services/getOffers";
+import getOffers, { ClientJobOffer } from "./services/getOffers";
 
 interface OffersState {
-  listOfOffers: MapClientJobOffer;
+  initialized: boolean;
+  listOfOffers: ClientJobOffer[];
   fetchOffers: () => Promise<void>;
-  setListOfOffers: (data: MapClientJobOffer) => void;
+  setListOfOffers: (data: ClientJobOffer[]) => void;
+  getOfferById: (id: string) => { data: ClientJobOffer; index: number } | undefined;
+  updateOffer: (index: number, data: ClientJobOffer) => void
 }
 
-export const useOffers = create<OffersState>((set) => ({
-  listOfOffers: new Map(),
+export const useOffersStore = create<OffersState>((set, get) => ({
+  initialized: false,
+  listOfOffers: [],
   fetchOffers: async () => {
     const data = await getOffers('React');
     set({ listOfOffers: data.offers });
   },
   setListOfOffers: (data) => set({ listOfOffers: data }),
+  getOfferById: (id) => {
+    const state = get();
+    const offerIndex = state.listOfOffers.findIndex((offer) => offer.data.id === id);
+
+    return offerIndex !== -1 ? {
+      data: state.listOfOffers[offerIndex],
+      index: offerIndex
+    } : undefined;
+  },
+  updateOffer: (index, data) => {
+    const state = get();
+    state.listOfOffers[index] = data;
+    set({ listOfOffers: state.listOfOffers });
+  }
 }))

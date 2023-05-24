@@ -17,7 +17,7 @@ const INITIAL_MESSAGES = [
     benefits:[benefits],
     culture:[culture]
     }
-    donde cada key es:
+    Donde cada key del json es:
     yearsOfExperiences: Años de experiencia requeridos debe ser un string ejemplo: " 3+ años" o " 1 año"
     schedule: Horario y/o jornada laboral en caso de ambos ejemplo:  " Horario - Jornada "
     required_skills: Habilidades requeridas por el puesto 
@@ -28,7 +28,8 @@ const INITIAL_MESSAGES = [
     benefits: Beneficios
     culture: explicacion cultura de la empresa
     
-    Si no logras encontrar algun dato quiero que elimines la key o asignes su valor a 'undefined'`
+    Cada key por defecto es un string vacio en caso de no existir informacion en la descripcion
+    `
   }
 ]
 
@@ -57,15 +58,16 @@ export async function getOfferInformation({ description, minRequirements }: { de
   const data = await res.json();
   console.log({ data });
 
-  const offerInformation = data.choices[0].message?.content ?? '';
+  const offerInformation = data.choices[0].message?.content.toString() ?? '';
   console.log({ offerInformation })
 
 
   try {
-    const json = JSON.parse(offerInformation)
+    const json = JSON.parse(offerInformation.replaceAll("\n' +", '').replaceAll("'", ""))
     console.log({ objeto: json })
     return json;
   } catch (e: any) {
+    console.log({ errormessage: e.message })
     throw new Error("Cant convert to json")
   }
 
