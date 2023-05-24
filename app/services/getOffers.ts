@@ -108,6 +108,27 @@ export interface Upsellings {
   highlightStandingOffer: boolean;
 }
 
+export interface DetailedInformation {
+  yearsOfExperience?: string;
+  schedule?: string;
+  skills?: {
+    required?: Array<string>,
+    desired?: Array<string>
+  },
+  contract?: string;
+  responsabilities?: Array<string>
+  benefits?: Array<string>
+  culture: string;
+}
+
+export interface ClientJobOffer {
+  data: JobOffer,
+  loading: boolean,
+  detailedInformation: DetailedInformation | null
+}
+
+export type MapClientJobOffer = Map<string, ClientJobOffer>
+
 const infojobsUrl = process.env.INFOJOBS_API_URL ?? '';
 const infojobsToken = process.env.INFOJOBS_TOKEN ?? ''
 
@@ -121,12 +142,21 @@ export default async function getOffers(query: string) {
   const offers = await res.json();
 
   const jobOffers: Array<JobOffer> = await Promise.all(offers.items.map((offer: JobOffer) => getOfferById(offer.id)))
-  console.log({ first: jobOffers[0] })
+
+  const clientJobOffers: MapClientJobOffer = new Map();
+
+  jobOffers.forEach(offer => {
+    clientJobOffers.set(offer.id, {
+      data: offer,
+      detailedInformation: null,
+      loading: false
+    })
+  });
 
   return {
     pagination: {
 
     },
-    offers: jobOffers
+    offers: clientJobOffers
   };
 }

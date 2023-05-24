@@ -28,7 +28,7 @@ const INITIAL_MESSAGES = [
     benefits: Beneficios
     culture: explicacion cultura de la empresa
     
-    Si no logras encontrar algun dato quiero que lo reemplaces con null.`
+    Si no logras encontrar algun dato quiero que elimines la key o asignes su valor a 'undefined'`
   }
 ]
 
