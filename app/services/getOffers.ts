@@ -152,6 +152,7 @@ export default async function getOffers(query: string) {
     pagination: {
 
     },
-    offers: clientJobOffers
+    offers: clientJobOffers,
+    filters: offers.facets
   };
 }
