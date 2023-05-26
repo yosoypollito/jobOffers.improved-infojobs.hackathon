@@ -18,6 +18,8 @@ module.exports = {
         'success-l4':'#e6f6ee',
         'accent':'#ff6340',
         'accent-l4':'#fcedeb',
+        'alert':'#f1c40f',
+        'alert-l4':'#fef9e7',
         'ij-page-bg':'#F5F5F5',
         'ij-card-bg-hover':'#f3f9fb',
         'ij-container-bg':'#ffffff',

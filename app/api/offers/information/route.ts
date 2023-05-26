@@ -6,29 +6,32 @@ const INITIAL_MESSAGES = [
     role: "system",
     content: `Voy a enviarte descripciones de ofertas laborales, quiero que me extraigas datos de ella utilizando este formato json:
     {
-    yearsOfExperience: [yearsOfExperience],
-    schedule:[schedule],
-    skills:{
-    required:[required_skills],
-    desirable:[desirable_skills]
-    },
-    contract:[contract],
-    responsabilites:[responsabilities],
-    benefits:[benefits],
-    culture:[culture]
+    "yearsOfExperience": [yearsOfExperience],
+    "salary":[salary],
+    "schedule":[schedule],
+    "requiredSkills":[required_skills],
+    "desirableSkills":[desirable_skills],
+    "contract":[contract],
+    "responsabilities":[responsabilities],
+    "benefits":[benefits],
+    "culture":[culture]
     }
-    Donde cada key del json es:
-    yearsOfExperiences: Años de experiencia requeridos debe ser un string ejemplo: " 3+ años" o " 1 año"
-    schedule: Horario y/o jornada laboral en caso de ambos ejemplo:  " Horario - Jornada "
-    required_skills: Habilidades requeridas por el puesto 
-    desirable_skills: Habilidades deseadas aparte de las requeridas por el puesto
-    las habilidades Habilidades debe ser un array de string con cada habilidad
-    contract: Tipo y/o duracion del contrato debe ser un string ejemplo:  "Indefinido" o "[duracion]"
-    responsabilities: Responsabilidades a ejercer trabajando
-    benefits: Beneficios
-    culture: explicacion cultura de la empresa
     
-    Cada key por defecto es un string vacio en caso de no existir informacion en la descripcion
+    Valor por defecto: ""
+    Evitar valores como: No definido, No encontrado, no especificado etc..
+    El nombre de cada Key debe ser un string con comillas dobles.
+    
+    Donde cada key del json es:
+    yearsOfExperience: Años de experiencia requeridos debe ser un string ejemplo: "3+ años" o " 1 año"
+    salary: Rango salarial de la oferta debe ser un string ejemplo: "36.000€ - 40.000€ Bruto/año"
+    schedule: Horario y/o jornada laboral en caso de ambos ejemplo:  " Horario - Jornada "
+    requiredSkills: Habilidades requeridas por el puesto 
+    desirableSkills: Habilidades deseadas aparte de las requeridas por el puesto
+    las habilidades Habilidades debe ser un array de string con cada habilidad
+    contract: Tipo y/o duracion del contrato debe ser un string ejemplo:  "Indefinido" o "duracion"
+    responsabilities: Responsabilidades a ejercer trabajando [ "crear interfaces", "implementar apis" ]
+    benefits: Beneficios por ejemplo [ "salario competitivo" ]
+    culture: explicacion cultura de la empresa
     `
   }
 ]
@@ -36,7 +39,7 @@ const INITIAL_MESSAGES = [
 const pkKey = process.env.PK_KEY ?? '';
 const pkURL = process.env.PK_URL ?? '';
 
-export async function getOfferInformation({ description, minRequirements }: { description: string; minRequirements: string; }) {
+export async function getOfferInformation(text: string) {
   const res = await fetch(pkURL, {
     method: "POST",
     headers: {
@@ -49,11 +52,12 @@ export async function getOfferInformation({ description, minRequirements }: { de
         ...INITIAL_MESSAGES,
         {
           role: "user",
-          content: `${minRequirements} ${description}`
+          content: `${text}`
         }
       ]
     })
   })
+
 
   const data = await res.json();
   console.log({ data });
@@ -83,10 +87,24 @@ export async function GET(request: Request) {
 
     const offer = await getOfferById(id);
 
-    const offerInformation = await getOfferInformation({ description: offer.description, minRequirements: offer.minRequirements });
-    console.log({ offerInformation });
+    const toMerge: { [key: string]: any } = {
+      minRequirementInformation: {},
+      descriptionInformation: {}
+    }
+
+    if (offer.minRequirements) toMerge.minRequirementInformation = await getOfferInformation(offer.minRequirements);
+    if (offer.description) toMerge.descriptionInformation = await getOfferInformation(offer.description);
+    console.log({ toMerge });
     //TODO Add some functionality to save this information to database to make fast access after first time.
     // also handle if description is updated.
+    // 
+    const offerInformation: { [key: string]: any } = {}
+
+    Object.keys(toMerge.descriptionInformation).forEach((key: any) => {
+      offerInformation[key] = toMerge.descriptionInformation[key] ? toMerge.descriptionInformation[key] : toMerge.minRequirementInformation[key]
+    })
+
+    console.log({ offerInformation })
 
     return NextResponse.json({ offerInformation });
   } catch (e: any) {

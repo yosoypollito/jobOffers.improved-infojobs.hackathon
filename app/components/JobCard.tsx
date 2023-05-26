@@ -7,10 +7,9 @@ import List from "./List";
 import ListItem from "./ListItem";
 import Badge from "./Badge";
 import GetDetailedInformation from "./GetDetailedInformation";
+import DetailedInformation from "./DetailedInformation";
 export default function JobCard({ data: { title, profile, province, teleworking, link, skillsList, contractType, updateDate, salaryDescription, journey, experienceMin, ...offer }, detailedInformation, loading }: ClientJobOffer) {
   const { texts, times } = formatDate(new Date(updateDate))
-
-  console.log({ detailedInformation })
 
   return (
     <div className="flex flex-col gap-2 bg-ij-container-bg hover:bg-ig-card-bg-hover p-4 w-full rounded-md">
@@ -77,23 +76,9 @@ export default function JobCard({ data: { title, profile, province, teleworking,
       </div>
 
 
-      {detailedInformation &&
-        <div className="flex flex-col gap-2">
-          <h3 className="text-sm">Informacion encontrada en la descripcion:</h3>
-          {detailedInformation?.culture && <span>Cultura: {detailedInformation.culture}</span>}
-          {detailedInformation?.contract && <span>Contrato: {detailedInformation.contract}</span>}
-          {detailedInformation?.benefits && <span>Beneficios: {detailedInformation.benefits}</span>}
-          {detailedInformation?.responsabilities && <span>Responsabilidades: {detailedInformation.responsabilities}</span>}
-          {detailedInformation?.skills && (
-            <>
-              <span>Habilidades:</span>
-              <span>{detailedInformation.skills.required}</span>
-              <span>{detailedInformation.skills.desired}</span>
-            </>
-          )}
-          {detailedInformation?.yearsOfExperience && <span>Experiencia: {detailedInformation.yearsOfExperience}</span>}
-        </div>
-      }
+      {detailedInformation && <DetailedInformation {...{
+        detailedInformation
+      }} />}
 
       <div className="grid grid-cols-3 place-content-center">
         <div>

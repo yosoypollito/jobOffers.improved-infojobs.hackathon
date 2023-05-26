@@ -111,14 +111,13 @@ export interface Upsellings {
 export interface DetailedInformation {
   yearsOfExperience?: string;
   schedule?: string;
-  skills?: {
-    required?: Array<string>,
-    desired?: Array<string>
-  },
+  requiredSkills?: Array<string>,
+  desirableSkills?: Array<string>,
   contract?: string;
   responsabilities?: Array<string>
   benefits?: Array<string>
   culture: string;
+  salary: string;
 }
 
 export interface ClientJobOffer {
@@ -131,13 +130,15 @@ const infojobsUrl = process.env.INFOJOBS_API_URL ?? '';
 const infojobsToken = process.env.INFOJOBS_TOKEN ?? ''
 
 export default async function getOffers(query: string) {
-  const res = await fetch(`${infojobsUrl}offer?category=informatica-telecomunicaciones&q=${query}`, {
+  const res = await fetch(`${infojobsUrl}offer?facets=true&category=informatica-telecomunicaciones&q=${query}`, {
     headers: {
       Authorization: `Basic ${infojobsToken}`
     }
   });
 
+
   const offers = await res.json();
+  console.log({ facets: offers.facets });
 
   const jobOffers: Array<JobOffer> = await Promise.all(offers.items.map((offer: JobOffer) => getOfferById(offer.id)))
 

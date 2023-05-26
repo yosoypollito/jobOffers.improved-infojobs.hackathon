@@ -9,6 +9,7 @@ export default function GetDetailedInformation({ id }: { id: string }) {
 
   const getDetailedInformation = async () => {
     const detailedInformation = await getOfferDetailedInformation(id)
+    console.log({ detailed: detailedInformation })
 
     if (!detailedInformation) return console.log({ message: "No se encontró la información" })
 
