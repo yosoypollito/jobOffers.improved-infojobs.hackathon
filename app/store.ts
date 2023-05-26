@@ -13,6 +13,9 @@ interface OffersState {
 export const useOffersStore = create<OffersState>((set, get) => ({
   initialized: false,
   listOfOffers: [],
+  filters: {
+    keyword: "react"
+  },
   fetchOffers: async () => {
     const data = await getOffers('React');
     set({ listOfOffers: data.offers });

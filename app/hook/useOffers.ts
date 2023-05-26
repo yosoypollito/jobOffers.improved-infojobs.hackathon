@@ -7,13 +7,23 @@ import { list } from "postcss";
 
 export default function useOffers({ offers }: { offers?: ClientJobOffer[] }) {
 
-  const { initialized, listOfOffers, fetchOffers, updateOffer, getOfferById, setListOfOffers } = useOffersStore();
+  const { initialized, listOfOffers, fetchOffers, updateOffer, getOfferById, setListOfOffers, filters } = useOffersStore();
+
+  const searchParams = useMemo(() => {
+    return new URLSearchParams(filters);
+  }, [filters])
+
 
   useEffect(() => {
     if (offers) setListOfOffers(offers);
 
-    useOffersStore.setState({ initialized: true });
+    if (!initialized) {
+      useOffersStore.setState({ initialized: true });
+    }
   }, [])
+
+  useEffect(() => {
+  }, [searchParams])
 
   const setDetailedInformation = (id: string, detailedInformation: DetailedInformation) => {
     const offer = getOfferById(id);
