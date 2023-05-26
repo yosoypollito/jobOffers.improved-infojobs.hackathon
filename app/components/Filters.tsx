@@ -1,23 +1,16 @@
-import { HTMLAttributes, HTMLProps } from "react";
-import FiltersGroup from "./FiltersGroup";
+import type { Facets } from "../services/getOffers";
+import FacetItem from "./FacetItem";
 
-const FilterInput = (props: HTMLProps<HTMLInputElement>) => {
-  return (
-    <label className="flex items-center gap-1 pointer">
-      <input {...props} />
-      {props.value}
-    </label>
-  )
-}
-
-export default function Filters() {
+export default function Filters({ facets }: { facets: Facets }) {
+  console.log({ facets })
 
   return (
-    <div className="grid grid-cols-[1fr] w-full h-screen bg-white p-4 rounded-md min-w-[220px]">
-      <FiltersGroup title="Ordenar ofertas">
-        <FilterInput name="" value="Fecha de publicacion" type="radio" />
-
-      </FiltersGroup>
+    <div className="grid grid-cols-[1fr] w-full bg-white p-4 rounded-md min-w-[220px] gap-10">
+      {facets.map((facet) => {
+        return (
+          <FacetItem key={facet.key} facet={facet} />
+        )
+      })}
     </div>
   )
 }

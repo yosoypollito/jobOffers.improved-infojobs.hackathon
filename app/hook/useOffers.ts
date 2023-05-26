@@ -1,17 +1,12 @@
 "use client"
 import { ClientJobOffer, DetailedInformation } from "../services/getOffers";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect } from "react";
 
 import { useOffersStore } from "../store";
-import { list } from "postcss";
 
 export default function useOffers({ offers }: { offers?: ClientJobOffer[] }) {
 
   const { initialized, listOfOffers, fetchOffers, updateOffer, getOfferById, setListOfOffers, filters } = useOffersStore();
-
-  const searchParams = useMemo(() => {
-    return new URLSearchParams(filters);
-  }, [filters])
 
 
   useEffect(() => {
@@ -23,7 +18,10 @@ export default function useOffers({ offers }: { offers?: ClientJobOffer[] }) {
   }, [])
 
   useEffect(() => {
-  }, [searchParams])
+    if (initialized) {
+      fetchOffers(filters);
+    }
+  }, [filters])
 
   const setDetailedInformation = (id: string, detailedInformation: DetailedInformation) => {
     const offer = getOfferById(id);

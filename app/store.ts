@@ -1,10 +1,12 @@
 import { create } from "zustand";
-import getOffers, { ClientJobOffer } from "./services/getOffers";
+import getOffers, { ClientJobOffer, Facets, Filters } from "./services/getOffers";
 
 interface OffersState {
   initialized: boolean;
   listOfOffers: ClientJobOffer[];
-  fetchOffers: () => Promise<void>;
+  filters: Filters;
+  facets: Facets;
+  fetchOffers: (filters: Filters) => Promise<void>;
   setListOfOffers: (data: ClientJobOffer[]) => void;
   getOfferById: (id: string) => { data: ClientJobOffer; index: number } | undefined;
   updateOffer: (index: number, data: ClientJobOffer) => void
@@ -14,11 +16,12 @@ export const useOffersStore = create<OffersState>((set, get) => ({
   initialized: false,
   listOfOffers: [],
   filters: {
-    keyword: "react"
+    "q": "react"
   },
-  fetchOffers: async () => {
-    const data = await getOffers('React');
-    set({ listOfOffers: data.offers });
+  facets: [],
+  fetchOffers: async (filters) => {
+    const data = await getOffers(filters);
+    set({ listOfOffers: data.offers, facets: data.facets });
   },
   setListOfOffers: (data) => set({ listOfOffers: data }),
   getOfferById: (id) => {

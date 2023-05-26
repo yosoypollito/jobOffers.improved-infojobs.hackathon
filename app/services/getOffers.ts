@@ -126,11 +126,36 @@ export interface ClientJobOffer {
   detailedInformation: DetailedInformation | null
 }
 
+export interface Filters {
+  [key: string]: any
+}
+
+export type FacetValue = {
+  key: string;
+  value: string;
+  count: number;
+}
+
+export type FacetValues = Array<FacetValue>
+
+export type Facet = {
+  key: string;
+  name: string;
+  values: FacetValues
+}
+
+export type Facets = Array<Facet>;
+
 const infojobsUrl = process.env.INFOJOBS_API_URL ?? '';
 const infojobsToken = process.env.INFOJOBS_TOKEN ?? ''
 
-export default async function getOffers(query: string) {
-  const res = await fetch(`${infojobsUrl}offer?facets=true&category=informatica-telecomunicaciones&q=${query}`, {
+const FACETS_KEY_TO_REMOVE = ['city'];
+
+export default async function getOffers(filters?: Filters) {
+  const searchParams = new URLSearchParams(filters).toString();
+  console.log({ searchParams })
+
+  const res = await fetch(`${infojobsUrl}offer?facets=true&category=informatica-telecomunicaciones&${searchParams}`, {
     headers: {
       Authorization: `Basic ${infojobsToken}`
     }
@@ -138,7 +163,6 @@ export default async function getOffers(query: string) {
 
 
   const offers = await res.json();
-  console.log({ facets: offers.facets });
 
   const jobOffers: Array<JobOffer> = await Promise.all(offers.items.map((offer: JobOffer) => getOfferById(offer.id)))
 
@@ -148,11 +172,17 @@ export default async function getOffers(query: string) {
     loading: false
   }));
 
+
+  const facets: Facets = [...offers.facets].filter((facet: Facet) => {
+    if (FACETS_KEY_TO_REMOVE.includes(facet.key)) return false;
+    return true
+  });
+
   return {
     pagination: {
 
     },
     offers: clientJobOffers,
-    filters: offers.facets
+    facets
   };
 }

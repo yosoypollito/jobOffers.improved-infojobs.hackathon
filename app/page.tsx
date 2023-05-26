@@ -3,15 +3,20 @@ import NavBar from './NavBar'
 import Filters from './components/Filters';
 import ListOfOffers from './components/Offers';
 import getOffers from './services/getOffers'
+import { useOffersStore } from './store';
 
 export default async function Home() {
-  const { offers } = await getOffers('React');
+
+  const { filters, fetchOffers } = useOffersStore.getState();
+  await fetchOffers(filters);
+  const { listOfOffers, facets } = useOffersStore.getState();
+
   return (
-    <div className="grid grid-cols-[1fr] w-full grid-rows-[min-content_1fr_min-content] h-screen">
+    <div className="grid grid-cols-[1fr] w-full grid-rows-[min-content_1fr_min-content]">
       <NavBar />
       <main className='grid grid-cols-[min-content_1fr] justify-start items-start cols-span-1 gap-4 p-2'>
-        <Filters />
-        <ListOfOffers offers={offers} />
+        <Filters facets={facets} />
+        <ListOfOffers offers={listOfOffers} />
 
       </main>
       <Footer />
