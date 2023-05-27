@@ -61,12 +61,11 @@ export const useOffersStore = create<OffersState>((set, get) => ({
   addFilter: (key, value, inputType) => {
 
     const state = get();
-    if (inputType === "text") {
 
-    } else if (inputType === "checkbox") {
+    if (inputType === "checkbox") {
       state.filters[key] ??= [];
       state.filters[key].push(value);
-    } else if (inputType === 'radio') {
+    } else if (['radio', 'text'].includes(inputType || "")) {
       state.filters[key] ??= "";
       state.filters[key] = value;
       set({ filters: state.filters });

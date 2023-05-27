@@ -6,12 +6,16 @@ import FacetGroup from "./FacetGroup"
 import useOffers from "../hook/useOffers"
 import CheckBox from "./CheckBox"
 import Radio from "./Radio"
+import TextField from "./TextField"
+
+import debounce from "just-debounce-it"
 
 const FilterInput = (props: HTMLProps<HTMLInputElement>) => {
   return (
     <>
       {props.type === "checkbox" && <CheckBox {...props} />}
       {props.type === "radio" && <Radio {...props} />}
+      {props.type === "text" && <TextField {...props} />}
     </>
   )
 }
@@ -20,7 +24,14 @@ export const ListOfFacetValues = ({ values, facetKey, inputType }: { values: Fac
 
   const { addFilter, removeFilter, filters } = useOffers({});
 
+  const addFilterDebounced = debounce(addFilter, 500)
+
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.type === 'text') {
+      addFilterDebounced(facetKey, e.target.value, inputType)
+      return;
+    }
+
     if (e.target.checked) {
       addFilter(facetKey, e.target.value, inputType)
     } else {
@@ -33,7 +44,7 @@ export const ListOfFacetValues = ({ values, facetKey, inputType }: { values: Fac
       {values.map(({ key: ValuesKey, value, count }) => (
         <FilterInput key={ValuesKey} name={ValuesKey}
           label={`${value} ${(count > 1) ? `(${count})` : ""}`}
-          value={ValuesKey}
+          defaultValue={inputType === "text" ? filters[facetKey] : ValuesKey}
           type={inputType || "checkbox"}
           onChange={handleFilterChange} checked={filters[facetKey] && filters[facetKey].includes(ValuesKey)} />
       ))}
