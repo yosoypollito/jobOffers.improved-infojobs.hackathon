@@ -42,7 +42,7 @@ export const useOffersStore = create<OffersState>((set, get) => ({
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/offers?${searchParams}`);
       const data = await res.json();
-      set({ listOfOffers: data.offers, listOfFacets: data.facets });
+      set({ listOfOffers: data.offers, listOfFacets: data.facets, paginationData: data.pagination });
     } catch (e) {
       console.log({ e })
     }
@@ -63,8 +63,12 @@ export const useOffersStore = create<OffersState>((set, get) => ({
     set({ listOfOffers: state.listOfOffers });
   },
   addFilter: (key, value, inputType) => {
-
     const state = get();
+
+    if (key !== 'page') {
+      state.filters["page"] = "1";
+    }
+
     if (['radio', 'text'].includes(inputType || "")) {
       state.filters[key] ??= "";
       state.filters[key] = value;
