@@ -1,4 +1,5 @@
 import getOfferById from "@/app/services/getOfferById";
+import { data } from "autoprefixer";
 
 export interface JobOffer {
   title: string;
@@ -145,7 +146,7 @@ export type Facet = {
   key: FacetKey;
   name: string;
   values: FacetValues,
-  inputType?: FacetInputType
+  inputType?: FacetInputType;
 }
 
 export type Facets = Array<Facet>;
@@ -205,6 +206,71 @@ export async function getOffers(filters: Filters) {
       if (FACETS_KEY_TO_REMOVE.includes(facet.key)) return false;
       return true
     });
+
+    console.log(facets[0])
+
+    const OrderFacet: Facet = {
+      key: 'order',
+      name: 'Ordenar ofertas',
+      values: [
+        {
+          key: 'updated-desc',
+          value: 'Fecha de publicación',
+          count: 0
+        },
+        {
+          key: 'relevancia-desc',
+          value: 'Relevancia',
+          count: 0
+        }
+      ],
+      inputType: "radio"
+    }
+
+    const DateFacet: Facet = {
+      key: 'sinceDate',
+      name: "Fecha",
+      values: [
+        {
+          key: 'ANY',
+          value: 'Cualquier fecha',
+          count: 0
+        },
+        {
+          key: '_24_HOURS',
+          value: 'Últimas 24 horas',
+          count: 0
+        },
+        {
+          key: '_7_DAYS',
+          value: 'Últimos 7 días',
+          count: 0
+        },
+        {
+          key: '_15_DAYS',
+          value: 'Últimos 15 días',
+          count: 0
+        }
+      ],
+      inputType: 'radio'
+    }
+
+    const keyWordFacet: Facet = {
+      key: 'q',
+      name: 'Palabra clave',
+      values: [
+        {
+          key: '',
+          value: '',
+          count: 0
+        }
+      ],
+      inputType: "text"
+    }
+
+    const staticFacets: Facets = [OrderFacet, keyWordFacet, DateFacet]
+
+    facets.unshift(...staticFacets)
 
     return {
       pagination: {

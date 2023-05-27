@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { ClientJobOffer, Facets, Filters } from "./services/getOffers";
+import { ClientJobOffer, FacetInputType, Facets, Filters } from "./services/getOffers";
 
 interface OffersState {
   initialized: boolean;
@@ -12,8 +12,8 @@ interface OffersState {
   setListOfFacets: (data: Facets) => void;
   getOfferById: (id: string) => { data: ClientJobOffer; index: number } | undefined;
   updateOffer: (index: number, data: ClientJobOffer) => void
-  addFilter: (key: string, value: string) => void
-  removeFilter: (key: string, value: string) => void
+  addFilter: (key: string, value: string, inputType?: FacetInputType) => void
+  removeFilter: (key: string, value: string, inputType?: FacetInputType) => void
 }
 
 export const useOffersStore = create<OffersState>((set, get) => ({
@@ -23,7 +23,9 @@ export const useOffersStore = create<OffersState>((set, get) => ({
   filters: {
     "q": "react",
     "facets": "true",
-    "category": ["informatica-telecomunicaciones"]
+    "category": ["informatica-telecomunicaciones"],
+    "order": "relevancia-desc",
+    "sinceDate": "_24_HOURS"
   },
   listOfFacets: [],
   fetchOffers: async (filters) => {
@@ -56,13 +58,20 @@ export const useOffersStore = create<OffersState>((set, get) => ({
     state.listOfOffers[index] = data;
     set({ listOfOffers: state.listOfOffers });
   },
-  addFilter: (key, value) => {
-    const state = get();
-    state.filters[key] ??= [];
+  addFilter: (key, value, inputType) => {
 
-    state.filters[key].push(value);
-    set({ filters: state.filters });
-    state.fetchOffers(state.filters)
+    const state = get();
+    if (inputType === "text") {
+
+    } else if (inputType === "checkbox") {
+      state.filters[key] ??= [];
+      state.filters[key].push(value);
+    } else if (inputType === 'radio') {
+      state.filters[key] ??= "";
+      state.filters[key] = value;
+      set({ filters: state.filters });
+    }
+    state.fetchOffers(get().filters)
   },
   removeFilter: (key, value) => {
     const state = get();

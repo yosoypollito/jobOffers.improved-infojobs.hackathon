@@ -22,9 +22,9 @@ export const ListOfFacetValues = ({ values, facetKey, inputType }: { values: Fac
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      addFilter(facetKey, e.target.value)
+      addFilter(facetKey, e.target.value, inputType)
     } else {
-      removeFilter(facetKey, e.target.value)
+      removeFilter(facetKey, e.target.value, inputType)
     }
   }
 
@@ -32,7 +32,7 @@ export const ListOfFacetValues = ({ values, facetKey, inputType }: { values: Fac
     <>
       {values.map(({ key: ValuesKey, value, count }) => (
         <FilterInput key={ValuesKey} name={ValuesKey}
-          label={`${value} ${count && `(${count})`}`}
+          label={`${value} ${(count > 1) ? `(${count})` : ""}`}
           value={ValuesKey}
           type={inputType || "checkbox"}
           onChange={handleFilterChange} checked={filters[facetKey] && filters[facetKey].includes(ValuesKey)} />
