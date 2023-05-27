@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ClientJobOffer, FacetInputType, Facets, Filters } from "./services/getOffers";
+import { ClientJobOffer, FacetInputType, Facets, Filters, PaginationData } from "./services/getOffers";
 
 interface OffersState {
   initialized: boolean;
@@ -7,9 +7,8 @@ interface OffersState {
   listOfOffers: ClientJobOffer[];
   filters: Filters;
   listOfFacets: Facets;
+  paginationData: PaginationData;
   fetchOffers: (filters: Filters) => Promise<void>;
-  setListOfOffers: (data: ClientJobOffer[]) => void;
-  setListOfFacets: (data: Facets) => void;
   getOfferById: (id: string) => { data: ClientJobOffer; index: number } | undefined;
   updateOffer: (index: number, data: ClientJobOffer) => void
   addFilter: (key: string, value: string, inputType?: FacetInputType) => void
@@ -28,6 +27,13 @@ export const useOffersStore = create<OffersState>((set, get) => ({
     "sinceDate": "_24_HOURS"
   },
   listOfFacets: [],
+  paginationData: {
+    currentPage: 0,
+    pageSize: 0,
+    totalResults: 0,
+    currentResults: 0,
+    totalPages: 0
+  },
   fetchOffers: async (filters) => {
     set({ blockInterface: true })
     try {
@@ -42,8 +48,6 @@ export const useOffersStore = create<OffersState>((set, get) => ({
     }
     set({ blockInterface: false })
   },
-  setListOfOffers: (data) => set({ listOfOffers: data }),
-  setListOfFacets: (data) => set({ listOfFacets: data }),
   getOfferById: (id) => {
     const state = get();
     const offerIndex = state.listOfOffers.findIndex((offer) => offer.data.id === id);

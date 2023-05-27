@@ -1,20 +1,21 @@
 "use client"
-import { ClientJobOffer, DetailedInformation, Facets } from "../services/getOffers";
+import { ClientJobOffer, DetailedInformation, Facets, PaginationData } from "../services/getOffers";
 import { useEffect } from "react";
 
 import { useOffersStore } from "../store";
 
-export default function useOffers({ offers, facets }: { offers?: ClientJobOffer[]; facets?: Facets; }) {
+export default function useOffers({ offers, facets, pagination }: { offers?: ClientJobOffer[]; facets?: Facets; pagination?: PaginationData; }) {
 
   const { initialized, listOfOffers, fetchOffers,
-    updateOffer, getOfferById, setListOfOffers,
+    updateOffer, getOfferById,
     filters, addFilter, removeFilter, blockInterface,
-    listOfFacets, setListOfFacets } = useOffersStore();
+    listOfFacets, paginationData } = useOffersStore();
 
 
   useEffect(() => {
-    if (offers) setListOfOffers(offers);
-    if (facets) setListOfFacets(facets);
+    if (offers) useOffersStore.setState({ listOfOffers: offers });
+    if (facets) useOffersStore.setState({ listOfFacets: facets });
+    if (pagination) useOffersStore.setState({ paginationData: pagination });
 
     if (!initialized) {
       useOffersStore.setState({ initialized: true });
@@ -34,6 +35,7 @@ export default function useOffers({ offers, facets }: { offers?: ClientJobOffer[
   return {
     listOfOffers: initialized ? listOfOffers : offers || [],
     listOfFacets: initialized ? listOfFacets : facets || [],
+    paginationData: initialized ? paginationData : pagination || [],
     setDetailedInformation,
     addFilter,
     removeFilter,

@@ -3,6 +3,7 @@ import NavBar from './NavBar'
 import Filters from './components/Filters';
 import LoadingInterfaceBlocker from './components/LoadingInterfaceBlocker';
 import ListOfOffers from './components/Offers';
+import Pagination from './components/Pagination';
 import { getOffers } from './services/getOffers';
 import { useOffersStore } from './store';
 
@@ -19,7 +20,10 @@ export default async function Home() {
         <main className='grid grid-cols-[min-content_1fr] justify-start items-start cols-span-1 gap-4 p-2 max-w-[960px]'>
 
           <Filters facets={facets} />
-          <ListOfOffers offers={offers} />
+          <div>
+            <ListOfOffers offers={offers} />
+            <Pagination pagination={pagination} />
+          </div>
           <LoadingInterfaceBlocker />
         </main>
       </div>

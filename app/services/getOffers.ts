@@ -1,5 +1,4 @@
 import getOfferById from "@/app/services/getOfferById";
-import { data } from "autoprefixer";
 
 export interface JobOffer {
   title: string;
@@ -151,6 +150,14 @@ export type Facet = {
 
 export type Facets = Array<Facet>;
 
+export interface PaginationData {
+  currentPage: number;
+  pageSize: number;
+  totalResults: number;
+  currentResults: number;
+  totalPages: number;
+}
+
 const infojobsUrl = process.env.INFOJOBS_API_URL ?? '';
 const infojobsToken = process.env.INFOJOBS_TOKEN ?? ''
 
@@ -268,9 +275,15 @@ export async function getOffers(filters: Filters) {
 
     facets.unshift(...staticFacets)
 
+    const { currentPage, pageSize, totalResults, currentResults, totalPages }: PaginationData = offers;
+
     return {
       pagination: {
-
+        currentPage,
+        pageSize,
+        totalResults,
+        currentResults,
+        totalPages,
       },
       offers: clientJobOffers,
       facets
@@ -280,7 +293,11 @@ export async function getOffers(filters: Filters) {
     console.log(e)
     return {
       pagination: {
-
+        currentPage: 0,
+        pageSize: 0,
+        totalResults: 0,
+        currentResults: 0,
+        totalPages: 0
       },
       offers: [],
       facets: []
