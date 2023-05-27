@@ -182,8 +182,6 @@ const FACETS_KEY_TO_REMOVE = ['city'];
 
 export async function getOffers(filters: Filters) {
   const searchParams = filters && getParams(filters);
-  console.log({ searchParams })
-
   try {
     const res = await fetch(`${infojobsUrl}offer?${searchParams}`, {
       headers: {
@@ -206,8 +204,6 @@ export async function getOffers(filters: Filters) {
       if (FACETS_KEY_TO_REMOVE.includes(facet.key)) return false;
       return true
     });
-
-    console.log(facets[0])
 
     const OrderFacet: Facet = {
       key: 'order',
