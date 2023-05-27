@@ -1,16 +1,20 @@
 "use client"
-import { ClientJobOffer, DetailedInformation } from "../services/getOffers";
+import { ClientJobOffer, DetailedInformation, Facets } from "../services/getOffers";
 import { useEffect } from "react";
 
 import { useOffersStore } from "../store";
 
-export default function useOffers({ offers }: { offers?: ClientJobOffer[] }) {
+export default function useOffers({ offers, facets }: { offers?: ClientJobOffer[]; facets?: Facets; }) {
 
-  const { initialized, listOfOffers, fetchOffers, updateOffer, getOfferById, setListOfOffers, filters, addFilter, removeFilter } = useOffersStore();
+  const { initialized, listOfOffers, fetchOffers,
+    updateOffer, getOfferById, setListOfOffers,
+    filters, addFilter, removeFilter, blockInterface,
+    listOfFacets, setListOfFacets } = useOffersStore();
 
 
   useEffect(() => {
     if (offers) setListOfOffers(offers);
+    if (facets) setListOfFacets(facets);
 
     if (!initialized) {
       useOffersStore.setState({ initialized: true });
@@ -29,9 +33,11 @@ export default function useOffers({ offers }: { offers?: ClientJobOffer[] }) {
 
   return {
     listOfOffers: initialized ? listOfOffers : offers || [],
+    listOfFacets: initialized ? listOfFacets : facets || [],
     setDetailedInformation,
     addFilter,
     removeFilter,
-    filters
+    filters,
+    blockInterface
   };
 }

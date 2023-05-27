@@ -3,11 +3,13 @@ import type { ClientJobOffer, Facets, Filters } from "./services/getOffers";
 
 interface OffersState {
   initialized: boolean;
+  blockInterface: boolean;
   listOfOffers: ClientJobOffer[];
   filters: Filters;
-  facets: Facets;
+  listOfFacets: Facets;
   fetchOffers: (filters: Filters) => Promise<void>;
   setListOfOffers: (data: ClientJobOffer[]) => void;
+  setListOfFacets: (data: Facets) => void;
   getOfferById: (id: string) => { data: ClientJobOffer; index: number } | undefined;
   updateOffer: (index: number, data: ClientJobOffer) => void
   addFilter: (key: string, value: string) => void
@@ -16,26 +18,30 @@ interface OffersState {
 
 export const useOffersStore = create<OffersState>((set, get) => ({
   initialized: false,
+  blockInterface: false,
   listOfOffers: [],
   filters: {
     "q": "react",
     "facets": "true",
     "category": ["informatica-telecomunicaciones"]
   },
-  facets: [],
+  listOfFacets: [],
   fetchOffers: async (filters) => {
+    set({ blockInterface: true })
     try {
       const searchParams = new URLSearchParams(filters).toString();
       console.log({ searchParams })
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/offers?${searchParams}`);
       const data = await res.json();
-      set({ listOfOffers: data.offers, facets: data.facets });
+      set({ listOfOffers: data.offers, listOfFacets: data.facets });
     } catch (e) {
       console.log({ e })
     }
+    set({ blockInterface: false })
   },
   setListOfOffers: (data) => set({ listOfOffers: data }),
+  setListOfFacets: (data) => set({ listOfFacets: data }),
   getOfferById: (id) => {
     const state = get();
     const offerIndex = state.listOfOffers.findIndex((offer) => offer.data.id === id);
@@ -56,12 +62,12 @@ export const useOffersStore = create<OffersState>((set, get) => ({
 
     state.filters[key].push(value);
     set({ filters: state.filters });
-    console.log({ filtrado: state.filters })
-    state.fetchOffers(state.filters);
+    state.fetchOffers(state.filters)
   },
   removeFilter: (key, value) => {
     const state = get();
     if (!state.filters[key]) return;
+
 
     const valueIndex = state.filters[key].indexOf(value)
     if (valueIndex === -1) {
