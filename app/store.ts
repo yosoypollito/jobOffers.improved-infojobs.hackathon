@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ClientJobOffer, FacetInputType, Facets, Filters, PaginationData } from "./services/getOffers";
+import type { ClientJobOffer, FacetInputType, Facets, Filters, PaginationData } from "./services/getOffers";
 
 interface OffersState {
   initialized: boolean;

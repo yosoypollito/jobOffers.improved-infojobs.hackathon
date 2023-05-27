@@ -35,7 +35,7 @@ export default function useOffers({ offers, facets, pagination }: { offers?: Cli
   return {
     listOfOffers: initialized ? listOfOffers : offers || [],
     listOfFacets: initialized ? listOfFacets : facets || [],
-    paginationData: initialized ? paginationData : pagination || [],
+    paginationData: initialized ? paginationData : pagination || paginationData,
     setDetailedInformation,
     addFilter,
     removeFilter,
