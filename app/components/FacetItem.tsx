@@ -55,7 +55,6 @@ export const ListOfFacetValues = ({ values, facetKey, inputType }: { values: Fac
 export default function FacetItem({ facet }: { facet: Facet }) {
 
   const { values, key, name } = facet
-  console.log({ key })
 
   const { isToggled, toggle } = useToggle()
 
