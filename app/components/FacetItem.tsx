@@ -43,7 +43,7 @@ export const ListOfFacetValues = ({ values, facetKey, inputType }: { values: Fac
     <>
       {values.map(({ key: ValuesKey, value, count }) => (
         <FilterInput key={ValuesKey} name={ValuesKey}
-          label={`${value} ${(count > 1) ? `(${count})` : ""}`}
+          label={`${value} ${(count > 0) ? `(${count})` : ""}`}
           defaultValue={inputType === "text" ? filters[facetKey] : ValuesKey}
           type={inputType || "checkbox"}
           onChange={handleFilterChange} checked={filters[facetKey] && filters[facetKey].includes(ValuesKey)} />
