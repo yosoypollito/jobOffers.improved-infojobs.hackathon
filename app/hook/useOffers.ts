@@ -6,7 +6,7 @@ import { useOffersStore } from "../store";
 
 export default function useOffers({ offers }: { offers?: ClientJobOffer[] }) {
 
-  const { initialized, listOfOffers, fetchOffers, updateOffer, getOfferById, setListOfOffers, filters } = useOffersStore();
+  const { initialized, listOfOffers, fetchOffers, updateOffer, getOfferById, setListOfOffers, filters, addFilter, removeFilter } = useOffersStore();
 
 
   useEffect(() => {
@@ -16,12 +16,6 @@ export default function useOffers({ offers }: { offers?: ClientJobOffer[] }) {
       useOffersStore.setState({ initialized: true });
     }
   }, [])
-
-  useEffect(() => {
-    if (initialized) {
-      fetchOffers(filters);
-    }
-  }, [filters])
 
   const setDetailedInformation = (id: string, detailedInformation: DetailedInformation) => {
     const offer = getOfferById(id);
@@ -35,6 +29,9 @@ export default function useOffers({ offers }: { offers?: ClientJobOffer[] }) {
 
   return {
     listOfOffers: initialized ? listOfOffers : offers || [],
-    setDetailedInformation
+    setDetailedInformation,
+    addFilter,
+    removeFilter,
+    filters
   };
 }

@@ -1,4 +1,4 @@
-import getOfferById from "./getOfferById";
+import getOfferById from "@/app/services/getOfferById";
 
 export interface JobOffer {
   title: string;
@@ -137,9 +137,10 @@ export type FacetValue = {
 }
 
 export type FacetValues = Array<FacetValue>
+export type FacetKey = string;
 
 export type Facet = {
-  key: string;
+  key: FacetKey;
   name: string;
   values: FacetValues
 }
@@ -149,40 +150,75 @@ export type Facets = Array<Facet>;
 const infojobsUrl = process.env.INFOJOBS_API_URL ?? '';
 const infojobsToken = process.env.INFOJOBS_TOKEN ?? ''
 
+/**
+ * Returns a string of URL parameters based on the provided filters.
+ * Normalized to infojobs api like category=[category1]&category=[category2]
+ *
+ * @param {Filters} filter - An object containing key-value pairs of filters.
+ * @return {string} A string of URL parameters, including normalized array parameters.
+ */
+export const getParams = (filter: Filters) => {
+  const mapFilter = new Map(Object.entries(filter));
+  const normalizedParams: string[] = []
+
+  if (!mapFilter.size) return "";
+
+  mapFilter.forEach((value, key) => {
+    if (!value) mapFilter.delete(key);
+    if (Array.isArray(value)) {
+      value.forEach(param => value && normalizedParams.push(`${key}=${param}`))
+      mapFilter.delete(key);
+    }
+  })
+
+  return new URLSearchParams(Object.fromEntries(mapFilter)).toString() + "&" + normalizedParams.join("&")
+}
+
 const FACETS_KEY_TO_REMOVE = ['city'];
 
-export default async function getOffers(filters?: Filters) {
-  const searchParams = new URLSearchParams(filters).toString();
+export async function getOffers(filters: Filters) {
+  const searchParams = filters && getParams(filters);
   console.log({ searchParams })
 
-  const res = await fetch(`${infojobsUrl}offer?facets=true&category=informatica-telecomunicaciones&${searchParams}`, {
-    headers: {
-      Authorization: `Basic ${infojobsToken}`
+  try {
+    const res = await fetch(`${infojobsUrl}offer?${searchParams}`, {
+      headers: {
+        Authorization: `Basic ${infojobsToken}`
+      }
+    });
+
+    const offers = await res.json();
+
+    const jobOffers: Array<JobOffer> = await Promise.all(offers.items.map((offer: JobOffer) => getOfferById(offer.id)))
+
+    const clientJobOffers: ClientJobOffer[] = jobOffers.map(offer => ({
+      data: offer,
+      detailedInformation: null,
+      loading: false
+    }));
+
+
+    const facets: Facets = [...offers.facets].filter((facet: Facet) => {
+      if (FACETS_KEY_TO_REMOVE.includes(facet.key)) return false;
+      return true
+    });
+
+    return {
+      pagination: {
+
+      },
+      offers: clientJobOffers,
+      facets
     }
-  });
+  } catch (e) {
+    //TODO handle errors
+    console.log(e)
+    return {
+      pagination: {
 
-
-  const offers = await res.json();
-
-  const jobOffers: Array<JobOffer> = await Promise.all(offers.items.map((offer: JobOffer) => getOfferById(offer.id)))
-
-  const clientJobOffers: ClientJobOffer[] = jobOffers.map(offer => ({
-    data: offer,
-    detailedInformation: null,
-    loading: false
-  }));
-
-
-  const facets: Facets = [...offers.facets].filter((facet: Facet) => {
-    if (FACETS_KEY_TO_REMOVE.includes(facet.key)) return false;
-    return true
-  });
-
-  return {
-    pagination: {
-
-    },
-    offers: clientJobOffers,
-    facets
-  };
+      },
+      offers: [],
+      facets: []
+    }
+  }
 }

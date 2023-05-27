@@ -1,10 +1,10 @@
-export default function FiltersGroup({ children, title }: { children: React.ReactNode; title: string; }) {
+export default function FiltersGroup({ children, title, id }: { children: React.ReactNode; title: string; id: string }) {
 
   return (
-    <div className="flex flex-col gap-2 items-start">
+    <fieldset className="flex flex-col gap-2 items-start" id={id}>
       <h3 className="text-base">{title}</h3>
       {children}
-    </div>
+    </fieldset>
   )
 
 }
