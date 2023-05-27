@@ -139,10 +139,13 @@ export type FacetValue = {
 export type FacetValues = Array<FacetValue>
 export type FacetKey = string;
 
+export type FacetInputType = "checkbox" | "radio" | "text";
+
 export type Facet = {
   key: FacetKey;
   name: string;
-  values: FacetValues
+  values: FacetValues,
+  inputType?: FacetInputType
 }
 
 export type Facets = Array<Facet>;

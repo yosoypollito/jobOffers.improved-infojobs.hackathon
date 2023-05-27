@@ -1,27 +1,22 @@
 "use client"
 import { HTMLProps } from "react"
-import { Facet, FacetKey, FacetValues } from "../services/getOffers"
+import { Facet, FacetInputType, FacetKey, FacetValues } from "../services/getOffers"
 import useToggle from "../hook/useToggle"
 import FacetGroup from "./FacetGroup"
 import useOffers from "../hook/useOffers"
+import CheckBox from "./CheckBox"
+import Radio from "./Radio"
 
 const FilterInput = (props: HTMLProps<HTMLInputElement>) => {
   return (
-    <label className="flex items-center gap-1 pointer text-sm">
-      {['checkbox', 'radios'].includes(props.type || "") &&
-        <div className="min-w-3 w-3 h-3 bg-lime-600 rounded-sm flex">
-
-        </div>}
-      <input className="hidden" {...props} />
-      <span>
-        {props.label}
-      </span>
-    </label>
+    <>
+      {props.type === "checkbox" && <CheckBox {...props} />}
+      {props.type === "radio" && <Radio {...props} />}
+    </>
   )
 }
 
-const ListOfFacetValues = ({ values, facetKey }: { values: FacetValues, facetKey: FacetKey }) => {
-  console.log(values[0])
+export const ListOfFacetValues = ({ values, facetKey, inputType }: { values: FacetValues, facetKey: FacetKey; inputType?: FacetInputType }) => {
 
   const { addFilter, removeFilter, filters } = useOffers({});
 
@@ -39,7 +34,7 @@ const ListOfFacetValues = ({ values, facetKey }: { values: FacetValues, facetKey
         <FilterInput key={ValuesKey} name={ValuesKey}
           label={`${value} ${count && `(${count})`}`}
           value={ValuesKey}
-          type="checkbox"
+          type={inputType || "checkbox"}
           onChange={handleFilterChange} checked={filters[facetKey] && filters[facetKey].includes(ValuesKey)} />
       ))}
     </>
@@ -56,10 +51,10 @@ export default function FacetItem({ facet }: { facet: Facet }) {
 
   return (
     <FacetGroup key={key} title={name} id={key + "_filter"}>
-      <ListOfFacetValues values={values.slice(0, 4)} facetKey={key} />
+      <ListOfFacetValues values={values.slice(0, 4)} facetKey={key} inputType={facet.inputType} />
 
       {(values.length > 4) && isToggled && (
-        <ListOfFacetValues values={values.slice(4)} facetKey={key} />
+        <ListOfFacetValues values={values.slice(4)} facetKey={key} inputType={facet.inputType} />
       )}
 
       {values.length > 4 && (
