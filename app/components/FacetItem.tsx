@@ -61,17 +61,22 @@ export default function FacetItem({ facet }: { facet: Facet }) {
 
 
   return (
-    <FacetGroup key={key} title={name} id={key + "_filter"}>
-      <ListOfFacetValues values={values.slice(0, 4)} facetKey={key} inputType={facet.inputType} />
+    <>
+      {values.length > 0 && (
 
-      {(values.length > 4) && isToggled && (
-        <ListOfFacetValues values={values.slice(4)} facetKey={key} inputType={facet.inputType} />
-      )}
+        <FacetGroup key={key} title={name} id={key + "_filter"}>
+          <ListOfFacetValues values={values.slice(0, 4)} facetKey={key} inputType={facet.inputType} />
 
-      {values.length > 4 && (
-        <button className="text-primary tracking-[0.0125em]" onClick={toggle}>Mostrar mas</button>
+          {(values.length > 4) && isToggled && (
+            <ListOfFacetValues values={values.slice(4)} facetKey={key} inputType={facet.inputType} />
+          )}
+
+          {values.length > 4 && (
+            <button className="text-primary tracking-[0.0125em]" onClick={toggle}>Mostrar mas</button>
+          )}
+        </FacetGroup>
       )}
-    </FacetGroup>
+    </>
   )
 
 }
