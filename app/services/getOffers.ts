@@ -260,7 +260,7 @@ export async function getOffers(filters: Filters) {
       name: 'Palabra clave',
       values: [
         {
-          key: '',
+          key: 'keyword',
           value: '',
           count: 0
         }
