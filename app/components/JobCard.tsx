@@ -12,7 +12,7 @@ export default function JobCard({ data: { title, profile, province, teleworking,
   const { texts, times } = formatDate(new Date(updateDate))
 
   return (
-    <div className="flex flex-col gap-2 bg-ij-container-bg hover:bg-ig-card-bg-hover p-4 w-full rounded-md">
+    <div className="flex flex-col gap-2 bg-white hover:bg-primary-l5 p-4 w-full rounded-md">
       <div className="flex flex-col gap-4 flex-1">
         <div className="flex flex-row justify-between">
           <List>
