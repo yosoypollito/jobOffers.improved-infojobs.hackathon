@@ -55,7 +55,7 @@ export default function NavBar() {
           </div>
         </div>
 
-        <div className={`absolute p-4 gap-4 md:relative md:translate-x-0 top-full left-0 transition-all duration-300 ${isToggled ? "translate-x-0" : "-translate-x-full"} flex flex-col md:flex-row md:gap-2 md:p-0 bg-white w-full z-10`}>
+        <div className={`absolute p-4 gap-4 md:relative md:translate-x-0 top-full left-0 transition-all duration-300 ${isToggled ? "translate-x-0" : "-translate-x-full"} flex flex-col md:flex-row md:p-0 bg-white w-full z-10`}>
           <NavBarItem href={'/'}>
             Buscar empleo
           </NavBarItem>
