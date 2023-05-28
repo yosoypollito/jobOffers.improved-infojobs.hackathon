@@ -54,20 +54,20 @@ export default function DetailedInformation({ detailedInformation }: { detailedI
         </DetailedItem>}
       </div>
 
-      {(responsabilities && responsabilities?.length > 0) && <DetailedItem title="Responsabilidades">
+      {(Array.isArray(responsabilities) && responsabilities?.length > 0) && <DetailedItem title="Responsabilidades">
         <DetailedListWithBadge arr={responsabilities} badgeColor="green" />
       </DetailedItem>}
 
-      {(benefits && benefits?.length > 0) && <DetailedItem title="Beneficios">
+      {(Array.isArray(benefits) && benefits?.length > 0) && <DetailedItem title="Beneficios">
         <DetailedListWithBadge arr={benefits} badgeColor="green" />
       </DetailedItem>}
 
-      {(requiredSkills && requiredSkills?.length > 0) &&
+      {(Array.isArray(requiredSkills) && requiredSkills?.length > 0) &&
         <DetailedItem title="Habilidades Requeridas">
           <DetailedListWithBadge arr={requiredSkills} badgeColor="orange" />
         </DetailedItem>}
 
-      {(desirableSkills && desirableSkills?.length > 0) &&
+      {(Array.isArray(desirableSkills) && desirableSkills.length > 0) &&
         <DetailedItem title="Habilidades Deseadas">
           <DetailedListWithBadge arr={desirableSkills} badgeColor="orange" />
         </DetailedItem>}
