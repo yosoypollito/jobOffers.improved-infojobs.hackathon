@@ -1,7 +1,6 @@
 import { HTMLProps } from "react";
 
 export default function CheckBox(props: HTMLProps<HTMLInputElement>) {
-  console.log({ check: props.checked })
   return (
     <label className="flex flex-row items-center gap-2 pointer text-sm text-left cursor-pointer">
       <div className={`relative flex items-center p-[3px] justify-center min-w-[16px] min-h-[16px] w-4 h-4 border-2 ${props.checked ? "border-primary bg-primary" : "border-gray"} rounded-sm`}>
