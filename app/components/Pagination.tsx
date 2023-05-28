@@ -12,7 +12,7 @@ const PaginationButton = (props: PaginationButtonProps) => {
 
   return (
     <button
-      className={`text-sm md:text-base flex flex-row items-center font-semibold gap-2 py-2 px-4 rounded
+      className={`text-xs sm:text-sm md:text-base flex flex-row items-center font-semibold gap-2 py-2 px-4 rounded
       ${props.current ? "bg-primary text-white" : "text-primary hover:bg-primary-l4 "}`}
       {...props}>
       {props.children}
@@ -44,7 +44,9 @@ export default function Pagination({ pagination }: { pagination: PaginationData 
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                 <path d="M15 6l-6 6l6 6"></path>
               </svg>
-              ANTERIOR
+              <span className="hidden md:inline">
+                ANTERIOR
+              </span>
             </PaginationButton>
           )}
           {paginationButtonsArr.slice(limit - 5, limit).map((value, index) => (
@@ -55,7 +57,9 @@ export default function Pagination({ pagination }: { pagination: PaginationData 
 
           {currentPage < totalPages && (
             <PaginationButton onClick={() => handleClick(currentPage + 1)}>
-              SIGUIENTE
+              <span className="hidden md:inline">
+                SIGUIENTE
+              </span>
               <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-chevron-right" width={20} height={20} viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                 <path d="M9 6l6 6l-6 6"></path>
