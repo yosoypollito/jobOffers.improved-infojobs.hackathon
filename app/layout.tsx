@@ -1,12 +1,7 @@
 import './globals.css'
-import { Open_Sans } from 'next/font/google'
-
-const openSans = Open_Sans({
-  subsets: ['latin']
-})
 
 export const metadata = {
-  title: 'Ofertas de trabajo | Daif',
+  title: 'Ofertas de trabajo infojobs por Daif',
   description: 'Version mejorada para buscar ofertas de trabajo en InfoJobs, Creado con InfoJobs y OpenAi por Daif',
 }
 
