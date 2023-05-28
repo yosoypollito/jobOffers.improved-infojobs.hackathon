@@ -9,7 +9,7 @@ export default function Filters({ facets }: { facets: Facets }) {
 
   const { listOfFacets, toggleShowFilters, showFilters } = useOffers({ facets })
   return (
-    <div className={`fixed md:flex flex-col bg-white z-10 w-full min-w-[220px] row-span-1 rounded-md overflow-auto max-h-screen md:relative md:overflow-hidden top-0 left-0 md:max-h-full transition-all duration-300 md:translate-y-0 ${showFilters ? 'flex translate-y-0' : 'translate-y-full'}`}>
+    <div className={`fixed md:flex flex-col bg-white z-10 w-full min-w-[220px] row-span-1 rounded-md overflow-auto max-h-screen max-w-screen md:relative md:overflow-hidden top-0 left-0 md:max-h-full md:max-w-full transition-all duration-300 md:translate-y-0 ${showFilters ? 'flex translate-y-0' : 'translate-y-full'}`}>
       <div className="p-4 border-b-2 border-b-ij-container-border w-full md:hidden">
         <Button onClick={toggleShowFilters}>Mostrar ofertas</Button>
       </div>
