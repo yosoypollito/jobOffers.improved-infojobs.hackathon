@@ -1,5 +1,5 @@
 ## Buscador de ofertas “mejorado” - Hackathon InfoJobs
-* Hecho por Daif para la Hackathon de MiduDev junto infojob
+* Hecho por Daif para la Hackathon de MiduDev junto infojobs
 * [Despliegue](https://infojobs.daif.one/)
 
 #### Razon
