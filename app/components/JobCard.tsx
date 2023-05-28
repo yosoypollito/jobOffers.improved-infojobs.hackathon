@@ -97,10 +97,10 @@ export default function JobCard({ data: { title, profile, province, teleworking,
           detailedInformation
         }} />}
 
-      <div className="grid grid-cols-3 place-content-center place-items-center">
-        <div className="hidden">
+      <div className="grid grid-cols-[min-content_1fr_min-content] place-items-center">
+        <div className="hidden md:block">
         </div>
-        <button className="col-span-2 md:col-span-1 justify-self-start md:justify-center text-xs text-primary font-bold uppercase flex flex-row gap-2" onClick={handleDetailedInformation}>
+        <button className="col-span-2 md:col-span-1 justify-self-start md:justify-self-center text-xs text-primary font-bold uppercase flex flex-row gap-2" onClick={handleDetailedInformation}>
           {loading
             ? (<>
               <LoadingSpin sizeClassNames="w-4 h-4" />
@@ -108,7 +108,7 @@ export default function JobCard({ data: { title, profile, province, teleworking,
             </>) :
             isToggled ? 'Ocultar detalles' : 'Ver Detalles'}
         </button>
-        <div className="col-[3] text-right justify-self-end">
+        <div className="col-[3] text-right justify-self-end w-fit whitespace-nowrap">
           <Link href={link} target="_blank" className="text-primary text-xs">Ver en InfoJobs</Link>
         </div>
       </div>
