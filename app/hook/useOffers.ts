@@ -3,6 +3,7 @@ import { ClientJobOffer, DetailedInformation, Facets, PaginationData } from "../
 import { useEffect } from "react";
 
 import { useOffersStore } from "../store";
+import getOfferDetailedInformation from "../services/getOfferDetailedInformation";
 
 export default function useOffers({ offers, facets, pagination }: { offers?: ClientJobOffer[]; facets?: Facets; pagination?: PaginationData; }) {
 
@@ -22,13 +23,26 @@ export default function useOffers({ offers, facets, pagination }: { offers?: Cli
     }
   }, [])
 
-  const setDetailedInformation = (id: string, detailedInformation: DetailedInformation) => {
+  const getDetailedInformation = async (id: string) => {
     const offer = getOfferById(id);
-    //TODO do something if offers is not found
+
     if (!offer) return;
 
-    offer.data.detailedInformation = detailedInformation;
+    offer.data.loading = true;
+    updateOffer(offer.index, offer.data);
+    try {
 
+      const detailedInformation = await getOfferDetailedInformation(id)
+      console.log({ detailed: detailedInformation })
+
+      if (!detailedInformation) return console.log({ message: "No se encontró la información" })
+
+      offer.data.detailedInformation = detailedInformation;
+    } catch (e) {
+      //TODO handle posible errors
+      console.log(e)
+    }
+    offer.data.loading = false;
     updateOffer(offer.index, offer.data);
   }
 
@@ -36,10 +50,11 @@ export default function useOffers({ offers, facets, pagination }: { offers?: Cli
     listOfOffers: initialized ? listOfOffers : offers || [],
     listOfFacets: initialized ? listOfFacets : facets || [],
     paginationData: initialized ? paginationData : pagination || paginationData,
-    setDetailedInformation,
+    getDetailedInformation,
     addFilter,
     removeFilter,
     filters,
-    blockInterface
+    blockInterface,
+    getOfferById
   };
 }

@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import { ClientJobOffer, JobOffer } from "../services/getOffers";
 import { formatDate } from "../utils";
@@ -6,10 +7,27 @@ import Skills from "./Skills";
 import List from "./List";
 import ListItem from "./ListItem";
 import Badge from "./Badge";
-import GetDetailedInformation from "./GetDetailedInformation";
 import DetailedInformation from "./DetailedInformation";
+import LoadingSpin from "./LoadingSpin";
+import useToggle from "../hook/useToggle";
+import useOffers from "../hook/useOffers";
 export default function JobCard({ data: { title, profile, province, teleworking, link, skillsList, contractType, updateDate, salaryDescription, journey, experienceMin, ...offer }, detailedInformation, loading }: ClientJobOffer) {
   const { texts, times } = formatDate(new Date(updateDate))
+
+  const { getDetailedInformation } = useOffers({})
+
+  const { toggle, isToggled } = useToggle();
+
+  const handleDetailedInformation = () => {
+    if (detailedInformation) {
+      toggle();
+      return;
+    }
+    getDetailedInformation(offer.id)
+    if (!isToggled) {
+      toggle();
+    }
+  }
 
   return (
     <div className="flex flex-col gap-2 bg-white hover:bg-primary-l5 p-4 w-full rounded-md">
@@ -76,14 +94,19 @@ export default function JobCard({ data: { title, profile, province, teleworking,
       </div>
 
 
-      {detailedInformation && <DetailedInformation {...{
-        detailedInformation
-      }} />}
+      {(detailedInformation && isToggled) &&
+        <DetailedInformation {...{
+          detailedInformation
+        }} />}
 
       <div className="grid grid-cols-3 place-content-center">
         <div>
         </div>
-        <GetDetailedInformation id={offer.id} />
+        <button onClick={handleDetailedInformation} className="text-sm flex flex-row items-center justify-center">
+          {loading
+            ? <LoadingSpin sizeClassNames="w-6 h-6" /> :
+            isToggled ? 'Ocultar detalles' : 'Ver Detalles'}
+        </button>
         <div className="col-[3] text-right">
           <Link href={link} target="_blank" className="text-primary text-xs">Ver en InfoJobs</Link>
         </div>
