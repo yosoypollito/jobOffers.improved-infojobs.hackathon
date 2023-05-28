@@ -30,7 +30,7 @@ export default function JobCard({ data: { title, profile, province, teleworking,
   }
 
   return (
-    <div className="flex flex-col gap-2 bg-white hover:bg-primary-l5 p-4 w-full rounded-md">
+    <div className="flex flex-col gap-4 bg-white hover:bg-primary-l5 p-4 w-full rounded-md">
       <div className="flex flex-col gap-4 flex-1">
         <div className="flex flex-row justify-between">
           <List>
@@ -99,15 +99,18 @@ export default function JobCard({ data: { title, profile, province, teleworking,
           detailedInformation
         }} />}
 
-      <div className="grid grid-cols-3 place-content-center">
+      <div className="grid grid-cols-3 place-content-center place-items-center">
         <div>
         </div>
-        <button onClick={handleDetailedInformation} className="text-sm flex flex-row items-center justify-center">
+        <button className="text-xs text-primary font-bold uppercase flex flex-row gap-2" onClick={handleDetailedInformation}>
           {loading
-            ? <LoadingSpin sizeClassNames="w-6 h-6" /> :
+            ? (<>
+              <LoadingSpin sizeClassNames="w-4 h-4" />
+              Obteniendo información
+            </>) :
             isToggled ? 'Ocultar detalles' : 'Ver Detalles'}
         </button>
-        <div className="col-[3] text-right">
+        <div className="col-[3] text-right justify-self-end">
           <Link href={link} target="_blank" className="text-primary text-xs">Ver en InfoJobs</Link>
         </div>
       </div>
