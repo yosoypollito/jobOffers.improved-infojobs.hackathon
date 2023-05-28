@@ -1,6 +1,6 @@
 "use client"
 
-import { HTMLAttributes, HTMLProps } from "react"
+import { HTMLAttributes } from "react"
 import { PaginationData } from "../services/getOffers"
 import useOffers from "../hook/useOffers"
 
@@ -31,6 +31,8 @@ export default function Pagination({ pagination }: { pagination: PaginationData 
     addFilter('page', page.toString(), "radio")
   }
 
+  const limit = Math.ceil(currentPage / 5) * 5
+
   return (
     <>
       {paginationButtonsArr.length > 1 && (
@@ -45,9 +47,9 @@ export default function Pagination({ pagination }: { pagination: PaginationData 
               ANTERIOR
             </PaginationButton>
           )}
-          {paginationButtonsArr.slice(currentPage - 1, currentPage + 4).map((_, index) => (
-            <PaginationButton key={index} current={currentPage === (index + 1)} onClick={() => handleClick(index + 1)}>
-              {index + 1}
+          {paginationButtonsArr.slice(limit - 5, limit).map((value, index) => (
+            <PaginationButton key={index} current={currentPage === (value)} onClick={() => handleClick(value)}>
+              {value}
             </PaginationButton>
           ))}
 
