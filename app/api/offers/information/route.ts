@@ -1,6 +1,8 @@
 import getOfferById from "@/app/services/getOfferById";
 import { NextResponse } from "next/server";
 
+import { Redis } from "@upstash/redis";
+
 const INITIAL_MESSAGES = [
   {
     role: "system",
@@ -77,6 +79,14 @@ export async function getOfferInformation(text: string) {
 
 }
 
+const redis = Redis.fromEnv({
+  retry: {
+    retries: 5,
+    backoff: (retryCount) => Math.exp(retryCount) * 500
+  }
+});
+export const revalidate = 0;
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
@@ -87,26 +97,41 @@ export async function GET(request: Request) {
 
     const offer = await getOfferById(id);
 
-    const toMerge: { [key: string]: any } = {
-      minRequirementInformation: {},
-      descriptionInformation: {}
+    const offerFromRedis = await redis.get(`offer.detailedInformation.${id}`)
+
+    let detailedInformation = {};
+
+    if (!offerFromRedis) {
+
+      const toMerge: { [key: string]: any } = {
+        minRequirementInformation: {},
+        descriptionInformation: {}
+      }
+
+      if (offer.minRequirements) toMerge.minRequirementInformation = await getOfferInformation(offer.minRequirements);
+      if (offer.description) toMerge.descriptionInformation = await getOfferInformation(offer.description);
+      console.log({ toMerge });
+      //TODO Add some functionality to save this information to database to make fast access after first time.
+      // also handle if description is updated.
+      // 
+      const offerInformation: { [key: string]: any } = {}
+
+      Object.keys(toMerge.descriptionInformation).forEach((key: any) => {
+        offerInformation[key] = toMerge.descriptionInformation[key] ? toMerge.descriptionInformation[key] : toMerge.minRequirementInformation[key]
+      })
+
+      console.log({ offerInformation })
+
+      await redis.set(`offer.detailedInformation.${id}`, { ...offerInformation });
+      detailedInformation = offerInformation;
     }
 
-    if (offer.minRequirements) toMerge.minRequirementInformation = await getOfferInformation(offer.minRequirements);
-    if (offer.description) toMerge.descriptionInformation = await getOfferInformation(offer.description);
-    console.log({ toMerge });
-    //TODO Add some functionality to save this information to database to make fast access after first time.
-    // also handle if description is updated.
-    // 
-    const offerInformation: { [key: string]: any } = {}
+    if (offerFromRedis) {
+      detailedInformation = { ...offerFromRedis }
+    }
 
-    Object.keys(toMerge.descriptionInformation).forEach((key: any) => {
-      offerInformation[key] = toMerge.descriptionInformation[key] ? toMerge.descriptionInformation[key] : toMerge.minRequirementInformation[key]
-    })
+    return NextResponse.json({ offerInformation: detailedInformation });
 
-    console.log({ offerInformation })
-
-    return NextResponse.json({ offerInformation });
   } catch (e: any) {
     return new Response(`Error: ${e.message}`, { status: 400 });
   }
