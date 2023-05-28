@@ -12,7 +12,7 @@ const PaginationButton = (props: PaginationButtonProps) => {
 
   return (
     <button
-      className={`flex flex-row items-center font-semibold gap-2 py-2 px-4 rounded
+      className={`text-sm md:text-base flex flex-row items-center font-semibold gap-2 py-2 px-4 rounded
       ${props.current ? "bg-primary text-white" : "text-primary hover:bg-primary-l4 "}`}
       {...props}>
       {props.children}
