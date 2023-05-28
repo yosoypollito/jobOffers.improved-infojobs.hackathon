@@ -24,7 +24,7 @@ export const useOffersStore = create<OffersState>((set, get) => ({
     "facets": "true",
     "category": ["informatica-telecomunicaciones"],
     "order": "relevancia-desc",
-    "sinceDate": "_24_HOURS"
+    "sinceDate": "ANY"
   },
   listOfFacets: [],
   paginationData: {
