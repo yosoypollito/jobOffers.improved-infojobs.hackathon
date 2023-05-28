@@ -37,7 +37,7 @@ export default function Pagination({ pagination }: { pagination: PaginationData 
     <>
       {paginationButtonsArr.length > 1 && (
 
-        <div className="flex flex-row w-full items-center justify-center p-2">
+        <div className="flex flex-row w-full items-center justify-center p-2 gap-1">
           {currentPage >= 2 && (
             <PaginationButton onClick={() => handleClick(currentPage - 1)}>
               <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-chevron-left" width={20} height={20} viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
