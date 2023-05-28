@@ -10,7 +10,7 @@ export default function LoadingInterfaceBlocker() {
   return (
     <>
       {blockInterface &&
-        <div className="fixed top-0 left-0 w-screen h-screen bg-white opacity-75 grid place-items-center">
+        <div className="z-30 fixed top-0 left-0 w-screen h-screen bg-white opacity-75 grid place-items-center">
           <LoadingSpin />
         </div>}
     </>
