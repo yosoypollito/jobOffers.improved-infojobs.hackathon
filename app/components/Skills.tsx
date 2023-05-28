@@ -4,7 +4,7 @@ import Badge from "./Badge";
 export default function Skills({ skillsList }: { skillsList: Array<SkillsList> }) {
 
   return (
-    <div className="flex flex-row gap-2 capitalize">
+    <div className="flex flex-row flex-wrap gap-2 capitalize">
       {skillsList && skillsList.length > 0 &&
         skillsList.slice(0, 5).map(({ skill }) => (<Badge color="orange" key={skill}>{skill}</Badge>))}
 

@@ -76,7 +76,7 @@ export default function JobCard({ data: { title, profile, province, teleworking,
         </div>
 
 
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-col md:flex-row gap-2">
           <Image className="object-cover w-[70px] h-[70px] border-2 border-ij-container-border rounded-md max-w-full max-h-full" src={profile.logoUrl || "/noAvatar.png"} width="70" height="70" alt={profile.name} />
           <div className="flex flex-col gap-2">
 
