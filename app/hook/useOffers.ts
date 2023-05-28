@@ -10,7 +10,7 @@ export default function useOffers({ offers, facets, pagination }: { offers?: Cli
   const { initialized, listOfOffers, fetchOffers,
     updateOffer, getOfferById,
     filters, addFilter, removeFilter, blockInterface,
-    listOfFacets, paginationData } = useOffersStore();
+    listOfFacets, paginationData, showFilters, toggleShowFilters } = useOffersStore();
 
 
   useEffect(() => {
@@ -55,6 +55,8 @@ export default function useOffers({ offers, facets, pagination }: { offers?: Cli
     removeFilter,
     filters,
     blockInterface,
-    getOfferById
+    getOfferById,
+    showFilters,
+    toggleShowFilters
   };
 }

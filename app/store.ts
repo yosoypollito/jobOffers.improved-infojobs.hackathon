@@ -8,6 +8,8 @@ interface OffersState {
   filters: Filters;
   listOfFacets: Facets;
   paginationData: PaginationData;
+  showFilters: boolean;
+  toggleShowFilters: () => void;
   fetchOffers: (filters: Filters) => Promise<void>;
   getOfferById: (id: string) => { data: ClientJobOffer; index: number } | undefined;
   updateOffer: (index: number, data: ClientJobOffer) => void
@@ -17,6 +19,7 @@ interface OffersState {
 
 export const useOffersStore = create<OffersState>((set, get) => ({
   initialized: false,
+  showFilters: false,
   blockInterface: false,
   listOfOffers: [],
   filters: {
@@ -34,6 +37,7 @@ export const useOffersStore = create<OffersState>((set, get) => ({
     currentResults: 0,
     totalPages: 0
   },
+  toggleShowFilters: () => set({ showFilters: !get().showFilters }),
   fetchOffers: async (filters) => {
     set({ blockInterface: true })
     try {
