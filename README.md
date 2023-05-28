@@ -21,7 +21,7 @@ Utilizando IA se muestra mas informacion sacada desde la descripcion y requisito
 #### Participantes
 * Yo, Daif
 
-> #### Empece 5 dias tarde, queria perfeccionar mas todo 🥲
+> #### Empece 5 dias tarde tuve problemas de luz y net, queria perfeccionar mas todo 🥲
 
 ## Inicializar Proyecto
 
