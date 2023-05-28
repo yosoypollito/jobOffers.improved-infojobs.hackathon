@@ -35,28 +35,51 @@ const INITIAL_MESSAGES = [
 
 const pkKey = process.env.PK_KEY ?? '';
 const pkURL = process.env.PK_URL ?? '';
+const pkInfoURL = process.env.PK_INFO_URL ?? '';
 
 export default async function getDetailedInformation(text: string) {
-  const res = await fetch(pkURL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${pkKey}`
-    },
-    body: JSON.stringify({
-      model: "gpt-3.5-turbo",
-      messages: [
-        ...INITIAL_MESSAGES,
-        {
-          role: "user",
-          content: `${text}`
-        }
-      ]
+  const fetchJsonFromAI = async () => {
+
+    const res = await fetch(pkURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${pkKey}`
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          ...INITIAL_MESSAGES,
+          {
+            role: "user",
+            content: `${text}`
+          }
+        ]
+      })
     })
-  })
+    return await res.json();
+  }
 
+  let data = await fetchJsonFromAI();
+  console.log(data)
 
-  const data = await res.json();
+  if (data.error && data.error.message.includes(`Your API key is not allowed to be used from this IP address`)) {
+
+    console.log('No ip allowed')
+    // This handle reset of ip connection cause proxy we are using for chat-gpt doesnt allow use more than 1 ip
+    // but using vercel makes this not possible to use in production
+    const verifyInfo = await fetch(`${pkInfoURL}/resetip`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${pkKey}`
+      }
+    });
+    const info = await verifyInfo.json();
+    console.log('Ip reseted')
+
+    data = await fetchJsonFromAI();
+  }
   console.log({ data });
 
   const offerInformation = data.choices[0].message?.content.toString() ?? '';
@@ -69,6 +92,7 @@ export default async function getDetailedInformation(text: string) {
     return json;
   } catch (e) {
     //TODO handle error
+    console.log('Error parsing json');
     return {};
   }
 }
