@@ -1,6 +1,7 @@
 "use client"
 
 import useOffers from "../hook/useOffers"
+import LoadingSpin from "./LoadingSpin";
 
 export default function LoadingInterfaceBlocker() {
 
@@ -10,7 +11,7 @@ export default function LoadingInterfaceBlocker() {
     <>
       {blockInterface &&
         <div className="fixed top-0 left-0 w-screen h-screen bg-white opacity-75 grid place-items-center">
-          <div className="animate-spin w-10 h-10 border-2 border-primary border-t-accent rounded-full"></div>
+          <LoadingSpin />
         </div>}
     </>
   )
