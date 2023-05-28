@@ -99,7 +99,7 @@ export async function GET(request: Request) {
 
     const offerFromRedis = await redis.get(`offer.detailedInformation.${id}`)
 
-    let detailedInformation = {};
+    let detailedInformation = offerFromRedis || {};
 
     if (!offerFromRedis) {
 
@@ -124,10 +124,6 @@ export async function GET(request: Request) {
 
       await redis.set(`offer.detailedInformation.${id}`, { ...offerInformation });
       detailedInformation = offerInformation;
-    }
-
-    if (offerFromRedis) {
-      detailedInformation = { ...offerFromRedis }
     }
 
     return NextResponse.json({ offerInformation: detailedInformation });
