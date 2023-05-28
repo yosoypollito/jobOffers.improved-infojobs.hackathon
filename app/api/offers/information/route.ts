@@ -72,11 +72,10 @@ export async function getOfferInformation(text: string) {
     const json = JSON.parse(offerInformation.replaceAll("\n' +", '').replaceAll("'", ""))
     console.log({ objeto: json })
     return json;
-  } catch (e: any) {
-    console.log({ errormessage: e.message })
-    throw new Error("Cant convert to json")
+  } catch (e) {
+    //TODO handle error
+    return {};
   }
-
 }
 
 const redis = Redis.fromEnv({
@@ -101,12 +100,13 @@ export async function GET(request: Request) {
 
     let detailedInformation = offerFromRedis || {};
 
-    if (!offerFromRedis) {
+    if (!offerFromRedis || Object.keys(offerFromRedis).length === 0) {
 
       const toMerge: { [key: string]: any } = {
         minRequirementInformation: {},
         descriptionInformation: {}
       }
+
 
       if (offer.minRequirements) toMerge.minRequirementInformation = await getOfferInformation(offer.minRequirements);
       if (offer.description) toMerge.descriptionInformation = await getOfferInformation(offer.description);
@@ -119,8 +119,6 @@ export async function GET(request: Request) {
       Object.keys(toMerge.descriptionInformation).forEach((key: any) => {
         offerInformation[key] = toMerge.descriptionInformation[key] ? toMerge.descriptionInformation[key] : toMerge.minRequirementInformation[key]
       })
-
-      console.log({ offerInformation })
 
       await redis.set(`offer.detailedInformation.${id}`, { ...offerInformation });
       detailedInformation = offerInformation;
