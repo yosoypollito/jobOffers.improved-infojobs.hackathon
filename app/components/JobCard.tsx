@@ -30,7 +30,7 @@ export default function JobCard({ data: { title, profile, province, teleworking,
   }
 
   return (
-    <div className="flex flex-col gap-4 bg-white hover:bg-primary-l5 p-4 w-full rounded-md">
+    <div className="relative flex flex-col gap-4 bg-white hover:bg-primary-l5 p-4 w-full rounded-md">
       <div className="flex flex-col gap-4 flex-1">
         <div className="flex flex-row justify-between">
           <List>
@@ -68,7 +68,7 @@ export default function JobCard({ data: { title, profile, province, teleworking,
           </List>
           <List>
             <ListItem>
-              <span className="cursor-pointer">
+              <span className="absolute right-4 top-4 md:relative md:top-auto md:right-auto cursor-pointer">
                 <svg className="fill-gray" width="15" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M5.568 12.977a3.5 3.5 0 0 1 4.556 0l2.726 2.337a.3.3 0 0 0 .496-.228V2.25a.5.5 0 0 0-.5-.5h-10a.5.5 0 0 0-.5.5v12.836a.3.3 0 0 0 .495.228l2.727-2.337ZM2.846.25h10a2 2 0 0 1 2 2v14.576a1 1 0 0 1-1.651.759l-4.048-3.47a2 2 0 0 0-2.603 0l-4.048 3.47a1 1 0 0 1-1.65-.76V2.25a2 2 0 0 1 2-2Z" /></svg>
               </span>
             </ListItem>
