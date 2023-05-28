@@ -1,15 +1,22 @@
 "use client"
-import Link from "next/link";
 import useOffers from "./hook/useOffers";
+import { HTMLProps } from "react";
+
+const FooterLink = (props: HTMLProps<HTMLAnchorElement>) => {
+
+  return (
+    <a className="underline text-primary" {...props}>
+      {props.children}
+    </a>
+  )
+}
 
 export default function Footer() {
 
-  const { listOfOffers } = useOffers({});
-  console.log({ listOfOffers })
   return (
-    <footer className="flex flex-row justify-center p-4 bg-ij-container-bg border-ij-container-border border-t-2">
+    <footer className="flex flex-row justify-center p-4 bg-ij-container-bg border-ij-container-border border-t-2 text-gray">
       <p>
-        Creado con <Link href="https://www.infojobs.net/">InfoJobs</Link> y <Link href="https://openai.com/">OpenAi</Link> por <Link href="https://github.com/yosoypollito">Daif</Link>
+        Creado con <FooterLink href="https://www.infojobs.net/" target="_blank">InfoJobs</FooterLink> y <FooterLink href="https://openai.com/" target="_blank">OpenAi</FooterLink> por <FooterLink href="https://github.com/yosoypollito" target="_blank">Daif</FooterLink>
       </p>
     </footer>
   )
