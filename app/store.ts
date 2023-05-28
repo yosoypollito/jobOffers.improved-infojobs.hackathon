@@ -66,7 +66,7 @@ export const useOffersStore = create<OffersState>((set, get) => ({
     state.listOfOffers[index] = data;
     set({ listOfOffers: state.listOfOffers });
   },
-  addFilter: (key, value, inputType) => {
+  addFilter: async (key, value, inputType) => {
     const state = get();
 
     if (key !== 'page') {
@@ -83,7 +83,11 @@ export const useOffersStore = create<OffersState>((set, get) => ({
       state.filters[key].push(value);
       set({ filters: state.filters });
     }
-    state.fetchOffers(state.filters)
+
+    await state.fetchOffers(state.filters)
+    if (key === 'page') {
+      window.scrollTo(0, 0);
+    }
   },
   removeFilter: (key, value) => {
     const state = get();
