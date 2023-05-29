@@ -14,7 +14,7 @@ import useOffers from "../hook/useOffers";
 export default function JobCard({ data: { title, profile, province, teleworking, link, skillsList, contractType, updateDate, salaryDescription, journey, experienceMin, ...offer }, detailedInformation, loading }: ClientJobOffer) {
   const { texts, times } = formatDate(new Date(updateDate))
 
-  const { getDetailedInformation } = useOffers({})
+  const { getDetailedInformation, detailedInformationError } = useOffers({})
 
   const { toggle, isToggled } = useToggle();
 
@@ -106,7 +106,10 @@ export default function JobCard({ data: { title, profile, province, teleworking,
               <LoadingSpin sizeClassNames="w-4 h-4" />
               Obteniendo información
             </>) :
-            (detailedInformation && isToggled) ? 'Ocultar detalles' : 'Ver Detalles'}
+            (detailedInformation && isToggled)
+              ? 'Ocultar detalles'
+              : `${(detailedInformationError.toLowerCase().includes("informacion no encontrada"))
+                ? 'Intentar de nuevo' : 'Ver Detalles'}`}
         </button>
         <div className="col-[3] text-right justify-self-end w-fit whitespace-nowrap">
           <Link href={link} target="_blank" className="text-primary text-xs">Ver en InfoJobs</Link>

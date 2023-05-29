@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { useOffersStore } from "../store";
 import getOfferDetailedInformation from "../services/getOfferDetailedInformation";
+import useErrorMessage from "./useErrorMessage";
 
 export default function useOffers({ offers, facets, pagination }: { offers?: ClientJobOffer[]; facets?: Facets; pagination?: PaginationData; }) {
 
@@ -23,6 +24,8 @@ export default function useOffers({ offers, facets, pagination }: { offers?: Cli
     }
   }, [])
 
+  const { errorMessage: detailedInformationError, setError: setDetailedInformationError } = useErrorMessage()
+
   const getDetailedInformation = async (id: string) => {
     const offer = getOfferById(id);
 
@@ -35,14 +38,18 @@ export default function useOffers({ offers, facets, pagination }: { offers?: Cli
       const detailedInformation = await getOfferDetailedInformation(id)
       console.log({ detailed: detailedInformation })
 
-      if (!detailedInformation) return console.log({ message: "No se encontró la información" })
+      if (!detailedInformation || Object.keys(detailedInformation).length === 0) throw new Error("Informacion no encontrada");
 
       offer.data.detailedInformation = detailedInformation;
     } catch (e) {
       //TODO handle posible errors
+      if (e instanceof Error) {
+        setDetailedInformationError(e);
+      }
       console.log(e)
+    } finally {
+      offer.data.loading = false;
     }
-    offer.data.loading = false;
     updateOffer(offer.index, offer.data);
   }
 
@@ -57,6 +64,7 @@ export default function useOffers({ offers, facets, pagination }: { offers?: Cli
     blockInterface,
     getOfferById,
     showFilters,
-    toggleShowFilters
+    toggleShowFilters,
+    detailedInformationError
   };
 }

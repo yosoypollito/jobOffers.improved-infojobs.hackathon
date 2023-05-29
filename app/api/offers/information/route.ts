@@ -61,6 +61,10 @@ export async function GET(request: Request) {
       detailedInformation = offerInformation;
     }
 
+    if (Object.keys(detailedInformation).length === 0) {
+      return new Response("Information not found, please try again", { status: 404 })
+    }
+
     return NextResponse.json({ offerInformation: detailedInformation });
 
   } catch (e: any) {
