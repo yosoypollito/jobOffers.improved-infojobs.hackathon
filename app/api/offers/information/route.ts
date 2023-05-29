@@ -41,9 +41,19 @@ export async function GET(request: Request) {
       //TODO Add some functionality to save this information to database to make fast access after first time.
       // also handle if description is updated.
       // 
-      const offerInformation: { [key: string]: any } = {}
+      const offerInformation: { [key: string]: string | Array<string> } = {
+        yearsOfExperience: '',
+        schedule: '',
+        requiredSkills: [],
+        desirableSkills: [],
+        contract: '',
+        responsabilities: [],
+        benefits: [],
+        culture: '',
+        salary: ''
+      }
 
-      Object.keys(toMerge.descriptionInformation).forEach((key: any) => {
+      Object.keys(offerInformation).forEach((key: any) => {
         offerInformation[key] = toMerge.descriptionInformation[key] ? toMerge.descriptionInformation[key] : toMerge.minRequirementInformation[key]
       })
 
