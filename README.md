@@ -13,13 +13,15 @@ Utilizando IA se muestra mas informacion sacada desde la descripcion y requisito
 
 
 #### Stack
-* Next.js 13 (App directory)
-* Chat-GPT 3
+* [Next.js 13](https://nextjs.org/) (App directory)
+* [Tailwind CSS](https://tailwindcss.com/)
+* [Zustand](https://github.com/pmndrs/zustand)
+* [Chat-GPT (Open AI)](https://openai.com/)
 * [InfoJobs Api](https://developer.infojobs.net/)
 * [Upstash (redis)](https://upstash.com/)
 
 #### Participantes
-* Yo, Daif
+* [Yo, Daif](https://github.com/yosoypollito)
 
 > #### Empece 5 dias tarde tuve problemas de luz y net, queria perfeccionar mas todo 🥲
 
