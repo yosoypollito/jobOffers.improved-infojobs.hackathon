@@ -2,14 +2,14 @@
 * Hecho por Daif para la Hackathon de MiduDev junto infojobs
 * [Despliegue](https://infojobs.daif.one/)
 
-#### Razon
-Como estoy en busqueda laboral activa, estoy cansado de leer distintas descripciones enormes sobre ofertas laborales y justo quise solucionar esto intentando recopilar la mayor cantidad de informacion sobre la oferta 😀
+#### Razón
+Como estoy en búsqueda laboral activa, estoy cansado de leer distintas descripciones enormes sobre ofertas laborales y justo quise solucionar esto intentando recopilar la mayor cantidad de información sobre la oferta 😀
 
 #### Apariencia
-Re-creacion de interfaz añadiendo mas informacion y funcionalidad, Basandome lo mas posible en el figma (Gracias por el figma)
+Recreación de interfaz añadiendo más información y funcionalidad, Basándome lo más posible en el Figma (Gracias por el Figma)
 
 #### Funcionalidad añadida || Solución a problema
-Utilizando IA se muestra mas informacion sacada desde la descripcion y requisitos minimos de la oferta, como utilizar IA suele dar tiempos largos de respuesta decidi utilizar upstash (redis) para cachear informacion y mejorar el tiempo de respuesta de futuras peticiones (+94%), como tambien optimizar el uso de la IA
+Utilizando IA se muestra más información sacada desde la descripción y requisitos mínimos de la oferta, como utilizar IA suele dar tiempos largos de respuesta, decidí utilizar upstash (redis) para cachear información y mejorar el tiempo de respuesta de futuras peticiones (+94%), y optimizar el uso de la IA
 
 
 #### Stack
@@ -23,7 +23,7 @@ Utilizando IA se muestra mas informacion sacada desde la descripcion y requisito
 #### Participantes
 * [Yo, Daif](https://github.com/yosoypollito)
 
-> #### Empece 5 dias tarde tuve problemas de luz y net, queria perfeccionar mas todo 🥲
+> #### Empecé 5 días tarde, tuve problemas de luz y net, quería perfeccionar más todo 🥲
 
 ## Inicializar Proyecto
 
