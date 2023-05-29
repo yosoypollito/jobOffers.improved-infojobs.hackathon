@@ -106,7 +106,7 @@ export default function JobCard({ data: { title, profile, province, teleworking,
               <LoadingSpin sizeClassNames="w-4 h-4" />
               Obteniendo información
             </>) :
-            isToggled ? 'Ocultar detalles' : 'Ver Detalles'}
+            (detailedInformation && isToggled) ? 'Ocultar detalles' : 'Ver Detalles'}
         </button>
         <div className="col-[3] text-right justify-self-end w-fit whitespace-nowrap">
           <Link href={link} target="_blank" className="text-primary text-xs">Ver en InfoJobs</Link>
