@@ -8,6 +8,7 @@ import Pagination from './components/Pagination';
 import { getOffers } from './services/getOffers';
 import { useOffersStore } from './store';
 
+export const revalidate = 60;
 
 export default async function Home() {
 
