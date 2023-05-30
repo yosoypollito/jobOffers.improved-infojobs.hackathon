@@ -104,3 +104,17 @@ export const useOffersStore = create<OffersState>((set, get) => ({
     state.fetchOffers(state.filters);
   }
 }))
+
+export const useReasonModal = create<{
+  open: boolean;
+  toggle: () => void
+}>((set, get) => ({
+  open: true,
+  toggle: () => {
+    const state = get();
+    const newOpen = !state.open
+    console.log(!state.open)
+    set({ open: newOpen })
+  }
+}
+))

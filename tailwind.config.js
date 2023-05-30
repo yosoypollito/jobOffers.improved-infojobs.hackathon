@@ -28,6 +28,9 @@ module.exports = {
       },
       boxShadow:{
         'focus':'0 0 3px rgba(0,0,0,.20)',
+      },
+      screens:{
+        'lg':'1100px'
       }
     },
   },

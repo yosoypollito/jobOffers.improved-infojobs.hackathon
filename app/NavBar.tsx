@@ -2,7 +2,7 @@
 import Link, { LinkProps } from "next/link"
 import Logo from "./components/Logo"
 import useToggle from "./hook/useToggle";
-import Button from "./components/Button";
+import { useReasonModal } from "./store";
 
 interface NavBarItemProps extends LinkProps {
   children: React.ReactNode;
@@ -13,6 +13,8 @@ const NavBarItem = (props: NavBarItemProps) => {
 
 
   const styles = "text-lg font-semibold md:text-base md:font-normal text-gray hover:text-primary";
+
+  const { toggle } = useReasonModal()
 
   return (
     <>
@@ -35,6 +37,8 @@ const NavBarItem = (props: NavBarItemProps) => {
 export default function NavBar() {
 
   const { isToggled, toggle } = useToggle()
+
+  const { toggle: toggleReasonModal } = useReasonModal()
   return (
     <nav className="relative justify-between p-2 md:p-5 bg-ij-container-bg border-ij-container-border border-b-2">
       <div className="flex flex-row max-w-[1280px] gap-4 m-auto items-center p-2">
@@ -71,6 +75,10 @@ export default function NavBar() {
           <NavBarItem href={'https://formacion.infojobs.net/'} target="_blank">
             Formación
           </NavBarItem>
+
+          <button onClick={toggleReasonModal} className="text-accent font-semibold lg:hidden self-start md:self-auto">
+            Explicación
+          </button>
         </div>
       </div>
     </nav>
