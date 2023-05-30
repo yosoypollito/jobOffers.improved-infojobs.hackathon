@@ -3,13 +3,17 @@
 * [Despliegue](https://infojobs.daif.one/)
 
 #### Razón
-Como estoy en búsqueda laboral activa, estoy cansado de leer distintas descripciones enormes sobre ofertas laborales y justo quise solucionar esto intentando recopilar la mayor cantidad de información sobre la oferta 😀
+Como estoy en búsqueda laboral activa, estoy cansado de leer distintas descripciones enormes sobre ofertas laborales, a veces con falta de información o difíciles de entender.
+
+#### Objetivo
+Hacer que el usuario obtenga la mayor cantidad de información sobre cada oferta que le interesa.
 
 #### Apariencia
-Recreación de interfaz añadiendo más información y funcionalidad, Basándome lo más posible en el Figma (Gracias por el Figma)
+Recreación de interfaz añadiendo más información y funcionalidad, Basándome en el Figma (Gracias por el Figma).
 
 #### Funcionalidad añadida || Solución a problema
-Utilizando IA se muestra más información sacada desde la descripción y requisitos mínimos de la oferta, como utilizar IA suele dar tiempos largos de respuesta, decidí utilizar upstash (redis) para cachear información y mejorar el tiempo de respuesta de futuras peticiones (+94%), y optimizar el uso de la IA
+Utilizando IA se extrae más información sobre la oferta utilizando la descripción y requisitos mínimos. Esta información es tratada y cacheada utilizando upstash (redis) para mejorar las futuras respuestas en un +94% y optimizar el uso de tokens
+
 
 
 #### Stack
