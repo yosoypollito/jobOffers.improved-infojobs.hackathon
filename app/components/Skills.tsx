@@ -10,7 +10,7 @@ export default function Skills({ skillsList }: { skillsList: Array<SkillsList> }
 
       {skillsList && skillsList.length > 5 && (
         <div className="relative group flex items-center">
-          <div className="group-hover:flex hidden flex-row absolute bottom-full left-full whitespace-nowrap bg-white shadow-focus rounded-sm text-xs px-2 py-0.5">
+          <div className="group-hover:flex hidden flex-col gap-1 text-left md:whitespace-nowrap absolute bottom-[105%] left-1/2 -translate-x-1/2 bg-white shadow-focus rounded-sm text-xs px-2 py-1">
             {skillsList.slice(5).map(({ skill }) => skill).join(", ")}
           </div>
           <svg xmlns="http://www.w3.org/2000/svg" className="text-accent" width={22} height={22} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
