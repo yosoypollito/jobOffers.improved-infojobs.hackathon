@@ -1,6 +1,6 @@
 ## Buscador de ofertas “mejorado” - Hackathon InfoJobs
-* Hecho por Daif para la Hackathon de MiduDev junto infojobs
-* [Despliegue](https://infojobs.daif.one/)
+* Hecho por [Daif](https://github.com/yosoypollito) para la Hackathon de [midudev](https://www.youtube.com/@midudev) junto [infojobs](https://infojobs.net)
+* [Despliegue](https://infojobs.daif.one)
 
 #### Razón
 Como estoy en búsqueda laboral activa, estoy cansado de leer distintas descripciones enormes sobre ofertas laborales, a veces con falta de información o difíciles de entender.
